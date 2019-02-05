@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import NavBar from "../General/NavBar";
+import SideBar from "../General/SideBar";
 
 class Main extends Component {
   constructor() {
@@ -12,7 +13,7 @@ class Main extends Component {
     return (
       <div>
         <NavBar />
-        test!!
+        <SideBar />
       </div>
     );
   }

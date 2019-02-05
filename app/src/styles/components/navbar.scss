@@ -1,9 +1,5 @@
 .nav-wrapper {
     height: 20%;
-    .nav_item-wrapper {
-        margin: auto;
-        width: 50%;
-    }
     .nav-status-bar {
         overflow: hidden;
         border-bottom: 1px solid #E5E5E5;
@@ -37,6 +33,26 @@
                 text-decoration: none;
                 outline: 0
             }
+        }
+    }
+    .nav-categories-wrapper {
+        height: 40px;
+        overflow: hidden;
+        border-bottom: 1px solid #E5E5E5;
+        text-align: center;
+        div{
+            display: inline-block;
+        }
+        .search-box{
+            float: right;
+            padding: 8px 30px;
+        }
+        .nav-categories_item{          
+            padding: 8px 10px;         
+        }
+        .logo {
+            float: left;
+            padding: 8px 20px;
         }
     }
     .cart-img {

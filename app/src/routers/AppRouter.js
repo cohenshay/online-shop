@@ -7,7 +7,7 @@ import ChatPage from '../components/ChatPage';
 import LoginPage from '../components/LoginPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import NavBar from '../components/General/NavBar';
+import Main from '../components/Main/Main';
 
 export const history = createHistory();
 
@@ -17,7 +17,7 @@ const AppRouter = () => (
       <Switch>
         {/* <PublicRoute path="/" component={LoginPage} exact={true} /> */}
         {/* <PublicRoute path="/main" component={NavBar}  /> */}
-        <PublicRoute path="/" component={NavBar} exact={true} />
+        <PublicRoute path="/" component={Main} exact={true} />
         <PrivateRoute path="/dashboard" component={DashboardPage} />
         <PrivateRoute path="/chat" component={ChatPage} />
         <Route  component={NotFoundPage} />

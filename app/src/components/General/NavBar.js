@@ -33,18 +33,25 @@ class NavBar extends Component {
             {this.state.categories
               .filter(x => x != "Home")
               .map((item, index) => (
-                <li className="nav-status-left_item"  key={index}>
+                <li className="nav-status-left_item" key={index}>
                   <Link to={`/${item}`}>{item}</Link>
                 </li>
               ))}
           </ul>
         </div>
-        <div className="nav_item-wrapper">
-          {/* {this.state.menues.map((item, index) => (
-            <div className="nav_item" key={index}>
+        <div className="nav-categories-wrapper">
+          <div className="search-box">
+            <img src="hhh" />
+            <input type="text" placeholder="Search" />
+          </div>
+          <div className="logo">
+            <img src="hhh" />
+          </div>
+          {this.state.menues.map((item, index) => (
+            <div className="nav-categories_item" key={index}>
               <Link to={`/${item}`}>{item}</Link>
             </div>
-          ))} */}
+          ))}
         </div>
       </div>
     );
