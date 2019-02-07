@@ -1,0 +1,11 @@
+.main {
+  position: relative;
+  .content_category_wrapper {
+    overflow: hidden;
+    margin-top: 295px;
+    .items-wrapper {
+      float: right;
+      width: calc(100% - 280px)
+    }
+  }
+}

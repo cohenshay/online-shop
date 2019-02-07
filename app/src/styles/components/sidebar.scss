@@ -1,12 +1,6 @@
 .side-bar {
-  bottom: auto;
-  position: absolute;
-  top: 191px;
-  left: 9px;
-  font-size: 13px;
-  height: 100%;
-  width: 296px;
-  padding: 0 19px;
+  float: left;
+  width: 276px;
   .side-bar-caegories {
     border-top: 1px solid #e5e5e5;
     padding-top: 10px;
