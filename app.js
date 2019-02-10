@@ -1,17 +1,18 @@
 //packeges
 const createError = require('http-errors');
+const fileUpload = require('express-fileupload');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const jwtAuthenticator = require('./helpers/jwtAuthenticator');
-
 //routes
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const roomRouter = require('./routes/room');
 const messageRouter = require('./routes/message');
+const shopRouter = require('./routes/shop');
 const http = require('http');
 
 
@@ -32,10 +33,10 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
-
+app.use(fileUpload({limits: { fileSize: 50 * 1024 * 1024 }, useTempFiles : false}));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -48,7 +49,7 @@ app.use('/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/room', roomRouter);
 app.use('/api/message', messageRouter);
-
+app.use('/api/shop/', shopRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

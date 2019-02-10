@@ -10,24 +10,30 @@
     "debug": "concurrently \"nodemon --inspect-brk ./bin/www\" \" npm run client \""
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
     "bcrypt": "^2.0.1",
     "concurrently": "^4.0.1",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
     "create-react-app": "^2.0.4",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-fileupload": "^1.1.1-alpha.2",
     "express-jwt": "^5.3.1",
     "hbs": "~4.0.1",
     "http": "0.0.0",
     "http-errors": "~1.6.2",
+    "install": "^0.12.2",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.4",
     "morgan": "~1.9.0",
+    "multer": "^1.4.1",
     "node-gyp": "^3.8.0",
     "node-pre-gyp": "^0.12.0",
     "node-sass": "^4.11.0",
     "nodemon": "^1.18.4",
+    "npm": "^6.7.0",
     "socket.io": "^2.1.1"
   }
 }
