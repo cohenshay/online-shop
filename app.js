@@ -9,6 +9,8 @@ const jwtAuthenticator = require('./helpers/jwtAuthenticator');
 const multer = require('multer');
 const crypto = require('crypto');
 const mime = require('mime');
+const moment=require('./helpers/moment');
+
 //routes
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
@@ -48,7 +50,7 @@ var storage = multer.diskStorage({
   },
   filename: function(req, file, callback) {
     crypto.pseudoRandomBytes(16, function (err, raw) {
-      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) +"_"+ Date.now() + '.' + mime.getExtension(file.mimetype));
+      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(file.mimetype));
     });
   }
 });

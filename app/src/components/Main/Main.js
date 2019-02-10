@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import NavBar from "../General/NavBar";
 import SideBar from "../General/SideBar";
 import Item from "../Items/Item";
+import {getAllItems} from '../../actions/shop';
 
 class Main extends Component {
   constructor() {
@@ -15,7 +16,9 @@ class Main extends Component {
     }]
     };
   }
-
+  componentDidMount=()=>{
+    this.props.getAllItems();
+  }
   render() {
     return (
       <div className="main">
@@ -24,8 +27,8 @@ class Main extends Component {
         <SideBar />
           {/* <div className="category_title">CATEGORY</div> */}
           <div className="items-wrapper">
-            {this.state.images.map((item, index) => (
-              <Item mainImagePath={item.main} images={item.all} key={index} />
+            {this.props.items && this.props.items.map((item, index) => (
+              <Item mainImagePath={item.mainImagePath} images={[item.image1Path,item.image2Path,item.image3Path]} key={index} />
             ))}
           </div>
         </div>
@@ -33,8 +36,12 @@ class Main extends Component {
     );
   }
 }
-const mapDispatchToProps = (dispatch, props) => ({});
-const mapStateToProps = (state, props) => ({});
+const mapDispatchToProps = (dispatch, props) => ({
+  getAllItems: () => { dispatch(getAllItems());},
+});
+const mapStateToProps = (state, props) => ({
+  items: state.shop.items,
+});
 
 export default connect(
   mapStateToProps,

@@ -4,6 +4,6 @@ const shopController = require('../controllers/shopController');
 
 
 router.post('/addItem', shopController.addItem);
-
+router.get('/getAllItems', shopController.getAllItems);
 
 module.exports = router;

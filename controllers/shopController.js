@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/config.json");
 const path = require("path");
 const multer = require("multer");
+const moment=require('../helpers/moment');
+const crypto = require('crypto');
+const mime = require('mime');
 mongoose.connect(config.mongoDB_URL, {
   useNewUrlParser: true
 });
@@ -40,12 +43,17 @@ let controller = {
       itemPrice
     } = req.body;
 
-    let { itemMainImg, itemImg1, itemImg2, itemImg3 } = req.files;
+    let itemMainImg = req.files[0];
+    let itemImg1 = req.files[1];
+    let itemImg2 = req.files[2];
+    let itemImg3 = req.files[3];
+    debugger
     console.log("files", req.files);
     upload(req, res, function(err) {
       if (err) {
         return res.end("Error uploading file.");
       } else {
+        console.log("itemMainImg",itemMainImg);
         const item = new Item({
           _id: new mongoose.Types.ObjectId(),
           audience,
@@ -59,10 +67,10 @@ let controller = {
           price,
           size,
           type,
-          mainImagePath: itemMainImg ? itemMainImg.name : null,
-          image1Path: itemImg1 ? itemImg1.name : null,
-          image2Path: itemImg2 ? itemImg2.name : null,
-          image3Path: itemImg3 ? itemImg3.name : null
+          mainImagePath: itemMainImg ? itemMainImg.originalname.substring(0,itemMainImg.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemMainImg.mimetype) : null,
+          image1Path: itemImg1 ? itemImg1.originalname.substring(0,itemImg1.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg1.mimetype) : null,
+          image2Path: itemImg2 ? itemImg2.originalname.substring(0,itemImg2.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg2.mimetype) : null,
+          image3Path: itemImg3 ? itemImg3.originalname.substring(0,itemImg3.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg3.mimetype) : null,
         });
         item
           .save()
@@ -74,6 +82,10 @@ let controller = {
           });
       }
     });
+  },
+  getAllItems:async (req,res)=>{
+    const items = await Item.find({});
+    res.status(200).send(items);
   }
 };
 
