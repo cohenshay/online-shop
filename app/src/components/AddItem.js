@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
 import { addItem } from "../actions/shop";
 
 class AddItem extends Component {
@@ -39,7 +37,21 @@ class AddItem extends Component {
         "Big & tall",
         "All Clothing"
       ],
-      menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"]
+      menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"],
+      audience:"",
+      name:"",
+      price:"",
+      main_img:"",
+      img1:"",
+      img2:"",
+      img3:"",
+      amount:"",
+      brand:"",
+      color:"",
+      description:"",
+      price:"",
+      size:"",
+      type:"",
     };
   }
   handleInputChange = (event, a) => {

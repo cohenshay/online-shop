@@ -6,6 +6,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const jwtAuthenticator = require('./helpers/jwtAuthenticator');
+const multer = require('multer');
+const crypto = require('crypto');
+const mime = require('mime');
 //routes
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
@@ -33,13 +36,23 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
-app.use(fileUpload({limits: { fileSize: 50 * 1024 * 1024 }, useTempFiles : false}));
+//app.use(fileUpload({limits: { fileSize: 50 * 1024 * 1024 }, useTempFiles : false}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+var storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, path.resolve(__dirname, `app/public/images/items/`));
+  },
+  filename: function(req, file, callback) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) +"_"+ Date.now() + '.' + mime.getExtension(file.mimetype));
+    });
+  }
+});
+app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/images/items/'),storage:storage}).any());
 // adds check token validation and return token decoded
 app.use("/api/", jwtAuthenticator);
 
