@@ -8,36 +8,12 @@ class NavBar extends Component {
     this.state = {
       menues: ["Home", "About", "Contact", "Chat"],
       categories: ["Men", "Woman", "Kids"],
-      menShoes: [
-        "SNKRS Launch Calendar",
-        "Lifestyle",
-        "Running",
-        "Training & Gym",
-        "Basketball",
-        "Jordan",
-        "Football",
-        "Soccer",
-        "Baseball",
-        "Golf",
-        "Skateboarding",
-        "Tennis",
-        "Boots",
-        "All Shoes"
-      ],
-      menClothing: [
-        "Tops & T-Shirts",
-        "Shorts",
-        "Polos",
-        "Hoodies & Sweatshirts",
-        "Jackets & Vests",
-        "Pants & Tights",
-        "Surf & Swimwear",
-        "Nike Pro & Comression",
-        "Socks & Underwear",
-        "Big & tall",
-        "All Clothing"
-      ],
-      menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"]
+      menShoes: ["SNKRS Launch Calendar", "Lifestyle", "Running", "Training & Gym", "Basketball", "Jordan", "Football",
+        "Soccer", "Baseball", "Golf", "Skateboarding", "Tennis", "Boots", "All Shoes"],
+      menClothing: ["Tops & T-Shirts", "Shorts", "Polos", "Hoodies & Sweatshirts", "Jackets & Vests", "Pants & Tights",
+        "Surf & Swimwear", "Nike Pro & Comression", "Socks & Underwear", "Big & tall", "All Clothing"],
+      menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"],
+
     };
   }
   toggleMenu = (menuName, status) => {
@@ -65,15 +41,12 @@ class NavBar extends Component {
             <li className="nav-status-left_item">
               <Link to="/">Home</Link>
             </li>
-            {this.state.menues
-              .filter(x => x != "Home")
-              .map((item, index) => (
-                <li className="nav-status-left_item" key={index}>
-                  <Link className="menu-link" to={`/${item}`}>
-                    {item}
-                  </Link>
-                </li>
-              ))}
+            {this.state.menues.filter(x => x != "Home").map((item, index) => (
+              <li className="nav-status-left_item" key={index}>
+                <Link className="menu-link" to={`/${item}`}> {item}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="nav-categories-wrapper">
@@ -86,12 +59,7 @@ class NavBar extends Component {
           </div>
           <ul>
             {this.state.categories.map((item, index) => (
-              <li
-                className="nav-categories_item"
-                onMouseEnter={() => this.toggleMenu(item, "open")}
-                onMouseLeave={() => this.toggleMenu(item, "close")}
-                key={index}
-              >
+              <li className="nav-categories_item" onMouseEnter={() => this.toggleMenu(item, "open")} onMouseLeave={() => this.toggleMenu(item, "close")} key={index} >
                 <Link to={`/${item}`}>{item}</Link>
               </li>
             ))}
@@ -122,7 +90,7 @@ class NavBar extends Component {
             <div className="nav-expand-category">
               <div className="nav-expand-category_title">
                 ACCESSORIES & EQUIPMENT
-              </div>
+                  </div>
 
               <ul>
                 {this.state.menAccessories.map((item, index) => (

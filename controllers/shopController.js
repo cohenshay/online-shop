@@ -15,6 +15,9 @@ require("../models/user");
 const User = mongoose.model("users");
 require("../models/item");
 const Item = mongoose.model("items");
+require("../models/category");
+const Category = mongoose.model("category");
+
 var upload = multer({ storage: storage }).any();
 
 var storage = multer.diskStorage({
@@ -86,6 +89,11 @@ let controller = {
   getAllItems:async (req,res)=>{
     const items = await Item.find({});
     res.status(200).send(items);
+  },
+  getAllCategories:async (req,res)=>{
+    debugger
+    const categories = await Category.find({});
+    res.status(200).send(categories);
   }
 };
 

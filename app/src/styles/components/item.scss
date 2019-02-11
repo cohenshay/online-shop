@@ -22,3 +22,25 @@
   } 
 }
 
+form {
+  border: 2px solid;
+  width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.field  {
+margin-bottom: 10px;
+}
+
+.field label {
+  width: 150px;float: left;
+}
+
+.field textarea{
+  height: 150px;
+  resize: none;
+}
+
+.field textarea,.field input,.field select{
+ width: calc(100%  - 150px);
+}
