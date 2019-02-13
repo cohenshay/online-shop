@@ -9,13 +9,10 @@ class AddItem extends Component {
     super();
     this.state = {
       audiences: ["Men", "Woman", "Kids"],
-      menShoes: ["", "", "", "", "", "",
-        "", "", "", "", "", "", ""],
-      menClothing: ["Tops & T-Shirts", "Shorts", "Polos", "Hoodies & Sweatshirts", "Jackets & Vests", "Pants & Tights",
-        "Surf & Swimwear", "Nike Pro & Comression", "Socks & Underwear", "Big & tall", "All Clothing"],
-      menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"],
+      category: "",
       audience: "",
       name: "",
+      sport: "",
       price: "",
       main_img: "",
       img1: "",
@@ -52,6 +49,7 @@ class AddItem extends Component {
     formData.append("audience", this.state.audience);
     formData.append("category", this.state.category);
     formData.append("itemName", this.state.name);
+    formData.append("itemSport", this.state.name);
     formData.append("itemPrice", this.state.price);
     formData.append("itemMainImg", this.state.main_img);
     formData.append("itemImg1", this.state.img1);
@@ -68,123 +66,154 @@ class AddItem extends Component {
 
     this.props.addItem(formData);
   };
-  getOptions = () => {
-    let result = [];
-    if (!this.state.category || !this.props.categories || this.props.categories.length == 0) return result;
-
-    switch (this.state.category) {
-      case "Shoes":
-        result = this.props.categories.filter(x => x.name == "Shoes").types;
-        break;
-      case "Clothing":
-        result = this.state.menClothing;
-        break;
-      case "Accessories":
-        result = this.state.menAccessories;
-        break;
-      default:
-        return result;
+  getTypeOptions = () => {
+    if (this.props.categories) {
+      const result = this.props.categories.filter(x => x.name == this.state.category);
+      if (result.length > 0)
+        return result[0].types;
+      return [];
     }
-    return result;
+    // let result = [];
+    // if (!this.state.category || !this.props.categories || this.props.categories.length == 0) return result;
+
+    // switch (this.state.category) {
+    //   case "Shoes":
+    //     result = this.props.categories.filter(x => x.name == "Shoes").types;
+    //     break;
+    //   case "Clothing":
+    //     result = this.state.menClothing;
+    //     break;
+    //   case "Accessories":
+    //     result = this.state.menAccessories;
+    //     break;
+    //   default:
+    //     return result;
+    // }
+    // return result;
   };
+  getsportOptions = () => {
+
+    if (this.props.categories) {
+      const result = this.props.categories.filter(x => x.name == this.state.category);
+      if (result.length > 0)
+        return result[0].sport;
+      return [];
+    }
+  }
   render() {
     const audienceOptions = ["Men", "Woman", "Kids"];
-    const categoryOptions = ["Shoes", "Clothing", "Accessories"];
+    const categoryOptions = this.props.categories ? this.props.categories : [];
     const colorOptions = ["Red", "Black", "Green", "Yellow", "Blue", "White", "Other"];
     const sizeOptions = ["xs", "s", "m", "l", "xl"];
-    const typeOptions = this.getOptions();
-    return (
-      <div className="add-page">
-        <form onSubmit={this.onFormSubmit}>
-          <div className="field">
-            <label>Audience</label>
-            <select className="audience" onChange={this.handleInputChange} name="audience">
-              {audienceOptions.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field">
-            <label>Category</label>
+    const typeOptions = this.getTypeOptions();
+    const sportOptions = this.getsportOptions();
+    if (this.props.categories) {
+      return (
+        <div className="add-page">
+          <form onSubmit={this.onFormSubmit}>
+            <div className="field">
+              <label>Audience</label>
+              <select className="audience" onChange={this.handleInputChange} name="audience">
+                {audienceOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Category</label>
 
-            <select className="category" onChange={this.handleInputChange} name="category">
-              {categoryOptions.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field">
-            <label>Type</label>
-            <select className="type" onChange={this.handleInputChange} name="type">
-              {typeOptions.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field">
-            <label>Item name</label>
-            <input type="text" className="item__name" onChange={this.handleInputChange} name="name" placeholder="name" />
-          </div>
-          <div className="field">
-            <label>Brand</label>
-            <input type="text" className="item__brand" onChange={this.handleInputChange} name="brand" placeholder="brand" />
-          </div>
-          <div className="field">
-            <label>Price</label>
-            <input type="number" className="item__price" onChange={this.handleInputChange} name="price" placeholder="price" />
-          </div>
-          <div className="field">
+              <select className="category" onChange={this.handleInputChange} name="category">
+                {categoryOptions.map((item, index) => (
+                  <option key={index} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Type</label>
+              <select className="type" onChange={this.handleInputChange} name="type">
+                {typeOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Sport</label>
+              <select className="sport" onChange={this.handleInputChange} name="sport">
+                {sportOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Item name</label>
+              <input type="text" className="item__name" onChange={this.handleInputChange} name="name" placeholder="name" />
+            </div>
+            <div className="field">
+              <label>Brand</label>
+              <input type="text" className="item__brand" onChange={this.handleInputChange} name="brand" placeholder="brand" />
+            </div>
+            <div className="field">
+              <label>Price</label>
+              <input type="number" className="item__price" onChange={this.handleInputChange} name="price" placeholder="price" />
+            </div>
+            <div className="field">
 
-            <label>Amount</label>
-            <input type="number" className="item__amount" onChange={this.handleInputChange} name="amount" placeholder="amount" />
-          </div>
-          <div className="field">
-            <label>Color</label>
-            <select className="color" onChange={this.handleInputChange} name="color">
-              {colorOptions.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field">
-            <label>Size</label>
-            <select className="item__size" onChange={this.handleInputChange} name="size">
-              {sizeOptions.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field">
-            <label>Decription</label>
-            <textarea className="item__description" onChange={this.handleInputChange} name="description" />
-          </div>
-          <div className="field">
-            <label>Main Image</label>
-            <input type="file" className="item__main_img" onChange={this.handleInputChange} name="main_img" />
-          </div>
-          <div className="field">
-            <label>More Images</label>
-            <input type="file" className="item__img1" onChange={this.handleInputChange} name="img1" />
-            <input type="file" className="item__img2" onChange={this.handleInputChange} name="img2" />
-            <input type="file" className="item__img3" onChange={this.handleInputChange} name="img3" />
-          </div>
-          <div className="field"></div>
-          <div className="field"></div>
+              <label>Amount</label>
+              <input type="number" className="item__amount" onChange={this.handleInputChange} name="amount" placeholder="amount" />
+            </div>
+            <div className="field">
+              <label>Color</label>
+              <select className="color" onChange={this.handleInputChange} name="color">
+                {colorOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Size</label>
+              <select className="item__size" onChange={this.handleInputChange} name="size">
+                {sizeOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Decription</label>
+              <textarea className="item__description" onChange={this.handleInputChange} name="description" />
+            </div>
+            <div className="field">
+              <label>Main Image</label>
+              <input type="file" className="item__main_img" onChange={this.handleInputChange} name="main_img" />
+            </div>
+            <div className="field">
+              <label>More Images</label>
+              <input type="file" className="item__img1" onChange={this.handleInputChange} name="img1" />
+              <input type="file" className="item__img2" onChange={this.handleInputChange} name="img2" />
+              <input type="file" className="item__img3" onChange={this.handleInputChange} name="img3" />
+            </div>
+            <div className="field"></div>
+            <div className="field"></div>
 
-          <button type="submit">Upload</button>
-        </form>
-      </div>
-    );
+            <button type="submit">Upload</button>
+          </form>
+        </div>
+      )
+    }
+    else {
+      return null;
+    }
   }
 }
 const mapDispatchToProps = (dispatch, props) => ({

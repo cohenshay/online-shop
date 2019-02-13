@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const itemSchema = new Schema({
   audience: String,
   name: String,
+  sport:String,
   price: String,
   mainImagePath: String,
   image1Path: String,

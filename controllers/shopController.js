@@ -31,10 +31,10 @@ var storage = multer.diskStorage({
 
 let controller = {
   addItem: (req, res) => {
-    debugger;
     const {
       audience,
       category,
+      sport,
       itemName,
       amount,
       brand,
@@ -61,6 +61,7 @@ let controller = {
           _id: new mongoose.Types.ObjectId(),
           audience,
           category,
+          sport,
           name: itemName,
           price: itemPrice,
           amount,
@@ -93,6 +94,17 @@ let controller = {
   getAllCategories: async (req, res) => {
     const categories = await Category.find({});
     res.status(200).send(categories);
+  },
+  filterTypes: async (req, res) => {
+    const filters = req.body.types;
+    if (filters && filters.length > 0) {
+      const items = await Item.find({ type: { $in: filters } });
+      res.status(200).send(items);
+    }
+    else {
+      const allItems = await Item.find({});
+      res.status(200).send(allItems);
+    }
   }
 };
 
