@@ -30,7 +30,7 @@ class AddItem extends Component {
       type: "",
     };
   }
-  componentDidMount=()=>{
+  componentDidMount = () => {
     this.props.getAllCategories();
   }
   handleInputChange = (event, a) => {
@@ -69,17 +69,23 @@ class AddItem extends Component {
     this.props.addItem(formData);
   };
   getOptions = () => {
-    if (!this.state.category || !this.props.categories || this.props.categories.length==0) return [];
+    let result = [];
+    if (!this.state.category || !this.props.categories || this.props.categories.length == 0) return result;
+
     switch (this.state.category) {
       case "Shoes":
-        return this.props.categories.filter(x=>x.name=="Shoes");
+        result = this.props.categories.filter(x => x.name == "Shoes").types;
+        break;
       case "Clothing":
-        return this.state.menClothing;
+        result = this.state.menClothing;
+        break;
       case "Accessories":
-        return this.state.menAccessories;
+        result = this.state.menAccessories;
+        break;
       default:
-        return [];
+        return result;
     }
+    return result;
   };
   render() {
     const audienceOptions = ["Men", "Woman", "Kids"];

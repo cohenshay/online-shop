@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/config.json");
 const path = require("path");
 const multer = require("multer");
-const moment=require('../helpers/moment');
+const moment = require('../helpers/moment');
 const crypto = require('crypto');
 const mime = require('mime');
 mongoose.connect(config.mongoDB_URL, {
@@ -21,10 +21,10 @@ const Category = mongoose.model("category");
 var upload = multer({ storage: storage }).any();
 
 var storage = multer.diskStorage({
-  destination: function(req, file, callback) {
+  destination: function (req, file, callback) {
     callback(null, path.resolve(__dirname, `../app/public/images/items/`));
   },
-  filename: function(req, file, callback) {
+  filename: function (req, file, callback) {
     callback(null, file.originalname + "-" + Date.now());
   }
 });
@@ -52,11 +52,11 @@ let controller = {
     let itemImg3 = req.files[3];
     debugger
     console.log("files", req.files);
-    upload(req, res, function(err) {
+    upload(req, res, function (err) {
       if (err) {
         return res.end("Error uploading file.");
       } else {
-        console.log("itemMainImg",itemMainImg);
+        console.log("itemMainImg", itemMainImg);
         const item = new Item({
           _id: new mongoose.Types.ObjectId(),
           audience,
@@ -70,14 +70,14 @@ let controller = {
           price,
           size,
           type,
-          mainImagePath: itemMainImg ? itemMainImg.originalname.substring(0,itemMainImg.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemMainImg.mimetype) : null,
-          image1Path: itemImg1 ? itemImg1.originalname.substring(0,itemImg1.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg1.mimetype) : null,
-          image2Path: itemImg2 ? itemImg2.originalname.substring(0,itemImg2.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg2.mimetype) : null,
-          image3Path: itemImg3 ? itemImg3.originalname.substring(0,itemImg3.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg3.mimetype) : null,
+          mainImagePath: itemMainImg ? itemMainImg.originalname.substring(0, itemMainImg.originalname.indexOf(".")) + "_" + moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemMainImg.mimetype) : null,
+          image1Path: itemImg1 ? itemImg1.originalname.substring(0, itemImg1.originalname.indexOf(".")) + "_" + moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg1.mimetype) : null,
+          image2Path: itemImg2 ? itemImg2.originalname.substring(0, itemImg2.originalname.indexOf(".")) + "_" + moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg2.mimetype) : null,
+          image3Path: itemImg3 ? itemImg3.originalname.substring(0, itemImg3.originalname.indexOf(".")) + "_" + moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(itemImg3.mimetype) : null,
         });
         item
           .save()
-          .then(function(result) {
+          .then(function (result) {
             res.status(200).send(result);
           })
           .catch(error => {
@@ -86,12 +86,11 @@ let controller = {
       }
     });
   },
-  getAllItems:async (req,res)=>{
+  getAllItems: async (req, res) => {
     const items = await Item.find({});
     res.status(200).send(items);
   },
-  getAllCategories:async (req,res)=>{
-    debugger
+  getAllCategories: async (req, res) => {
     const categories = await Category.find({});
     res.status(200).send(categories);
   }

@@ -25,6 +25,9 @@ class Item extends Component {
           {this.props.images.map((item, index) => (
             <img key={index} src={`${this.state.imagesPrefix}${item}`} className="img-in-slider" />))}
         </div>
+        <div className="price">
+       price
+      </div>
       </div>
     );
   }
