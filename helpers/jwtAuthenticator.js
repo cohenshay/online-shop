@@ -4,17 +4,11 @@ const jwt = require('jsonwebtoken');
 function jwtAuthenticator(req, res, next) {
     // route middleware to verify a token 
 
-
-    // var cookieArr = req.headers.cookie.split(";");
-    // var token = cookieArr[0].includes("jwt") ? cookieArr[0].replace("jwt=", "").trim() : cookieArr[1].replace("jwt=", "").trim();
-    // console.log("tokeObj", cookieArr)
-
     if (req.method == "OPTIONS") {
         next();
         return null;
     }
     var token = req.headers.authorization;
-    console.log("token", token);
     // decode token
     if (token) {
         // verifies secret and checks exp
