@@ -8,51 +8,15 @@ class SideBar extends Component {
     this.state = {
       showSport: true,
       showAllSport: false,
-      categories: [
-        "Shoes",
-        "Sport Bras",
-        "Bodysuits",
-        "Compression & Nike Pro",
-        "Tops & T-Shirts",
-        "Hoodies & Sweatshirts",
-        "Jackets & Gilets",
-        "Trousers & Tights",
-        "Tracksuits",
-        "Jumpsuits & Rompers",
-        "Skirts & Dresses",
-        "Surf & Swimwear",
+      categories: ["Shoes", "Sport Bras", "Bodysuits", "Compression & Nike Pro", "Tops & T-Shirts", "Hoodies & Sweatshirts",
+        "Jackets & Gilets", "Trousers & Tights", "Tracksuits", "Jumpsuits & Rompers", "Skirts & Dresses",  "Surf & Swimwear",
         "Accessories & Equipment"
       ],
-      sport: [
-        "Lifestyle",
-        "Running",
-        "BasketBall",
-        "Football",
-        "Soccer",
-        "Trainning & Gym",
-        "Skateboarding",
-        "Baseball / Softball",
-        "Golf",
-        "Tennis",
-        "Track & Field",
-        "Yoga",
-        "Lacrosse",
-        "Volleyball",
-        "Cheerleading",
-        "Surf & Swimming",
-        "Surfing",
-        "Walking",
-        "Boxing",
-        "Ice Hockey",
-        "Spinning"
+      sport: [ "Lifestyle", "Running", "BasketBall", "Football", "Soccer", "Trainning & Gym", "Skateboarding",
+        "Baseball / Softball", "Golf","Tennis", "Track & Field", "Yoga", "Lacrosse", "Volleyball", "Cheerleading",
+        "Surf & Swimming","Surfing", "Walking","Boxing", "Ice Hockey", "Spinning"
       ],
-      brand: [
-        "Nike",
-        "Converse",
-        "Hurley",
-        "Jordan",
-        "Nike Sportswear",
-        "NikeLab"
+      brand: [ "Nike", "Converse", "Hurley", "Jordan","Nike Sportswear", "NikeLab"
       ]
     };
   }

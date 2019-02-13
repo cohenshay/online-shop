@@ -14,12 +14,12 @@ class ChatPage extends Component {
       messages: [],
       userList: [],
       roomName: "a",
-    };    
+    };
   }
-  componentWillReceiveProps(nextProps, prevState){
-   this.setState({
-    roomMessages: nextProps.roomMessages
-   })   
+  componentWillReceiveProps(nextProps, prevState) {
+    this.setState({
+      roomMessages: nextProps.roomMessages
+    })
   }
   sendPrivateMessage = (user) => {
     const message = {
@@ -32,10 +32,10 @@ class ChatPage extends Component {
   }
 
   sendRoomMessage = (msg) => {
-    
+
     //save
     const message = {
-      text:msg,
+      text: msg,
       sender: this.props.currentUser.username,
       roomName: this.state.roomName
     }
@@ -58,14 +58,15 @@ class ChatPage extends Component {
             </div>
           </div>
         )}
-      </div>)
+      </div>
+    )
   }
- 
+
   componentDidMount() {
-    
+
     this.props.getRoomMessages(this.state.roomName);
-  
-   
+
+
 
     this.state.socket.on("connect", (err) => {
       if (err)
@@ -122,7 +123,7 @@ class ChatPage extends Component {
           <div className="chat__footer">
             <div id="message-form" >
               <input name="message" onChange={(e) => this.setState({ currentMessage: e.target.value })} type="text" placeholder="Message" autoFocus autoComplete="off" />
-              <button onClick={(e) => {this.sendRoomMessage(this.state.currentMessage) }}>Send</button>
+              <button onClick={(e) => { this.sendRoomMessage(this.state.currentMessage) }}>Send</button>
             </div>
           </div>
         </div>
