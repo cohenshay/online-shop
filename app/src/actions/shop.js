@@ -68,3 +68,27 @@ export const filterTypes = (types) => {
             })).catch((err) => console.log(err))
     }
 }
+export const getTypesByCategory = (categoryID) => {
+    return (dispatch, getState) => {
+
+        const config = {
+
+            headers: {
+                authorization: getState().auth.uid || localStorage.getItem('clientToken'),
+            }
+        }
+        axios.get(`http://localhost:5000/api/shop/category?categoryID=${categoryID}`, config)
+            .then((response) => dispatch({
+                type: "GET_TYPES_BY_CATEGORY",
+                data: response.data
+            })).catch((err) => console.log(err))
+    }
+}
+export const filterByCategory = (items) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: "FILTER_BY_CATEGORY",
+            data: items
+        })
+    }
+}

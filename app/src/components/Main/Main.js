@@ -27,7 +27,7 @@ class Main extends Component {
         <div className="content_category_wrapper">
           <SideBar />
           <div className="items-wrapper">
-            {this.props.items && this.props.items.map((item, index) => (
+            {this.props.items && this.props.items.length>0 && this.props.items.map((item, index) => (
               <Item  mainImagePath={item.mainImagePath} images={[item.image1Path, item.image2Path, item.image3Path]} item={item} key={index} />
             ))}
           </div>

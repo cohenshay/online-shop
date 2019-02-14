@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { filterTypes,getAllCategories } from '../../actions/shop';
+import { filterTypes, getAllCategories, getTypesByCategory,filterByCategory } from '../../actions/shop';
 class SideBar extends Component {
   constructor() {
     super();
     this.state = {
       showSport: true,
       showAllSport: false,
-      currentCategory:"Shoes",
+      currentCategory: "5c61af061967772f20cb0e29",
     };
   }
-  componentDidMount=()=>{
+  componentDidMount = () => {
     this.props.getAllCategories();
   }
   toggleCategory = category => {
@@ -41,20 +41,32 @@ class SideBar extends Component {
   getsportOptions = () => {
 
     if (this.props.categories) {
-      const result = this.props.categories.filter(x => x.name == this.state.currentCategory);
+      const result = this.props.categories.filter(x => x._id == this.state.currentCategory);
       if (result.length > 0)
         return result[0].sport;
       return [];
     }
   }
-
+  handleCategory = (categoryID) => {
+    this.setState({ currentCategory: categoryID });
+    this.props.getTypesByCategory(categoryID);
+  }
+  handleTypeClick = (items)=>{
+    this.props.filterByCategory(items);
+  }
   render() {
     const sportOptions = this.getsportOptions();
     return (
       <div className="side-bar">
         <div className="side-bar-caegories">
           {this.props.categories && this.props.categories.map((item, index) => (
-            <div className="side-bar_item" key={index} onClick={()=>{this.setState({currentCategory:item.name})}}>{item.name}</div>
+            <div className={`side-bar_item ${this.state.currentCategory==item._id? "chosen-category":""}`} key={index} onClick={() => this.handleCategory(item._id)}>{item.name}
+              {this.props.typesByCategory && this.props.typesByCategory.category.name == item.name &&
+                this.props.typesByCategory.types && this.props.typesByCategory.types.map((item, index) =>
+                  <div key={index} onClick={()=>this.handleTypeClick(item)} className="category-types">{item.type}{`(${item.items && item.items.length})`}</div>
+                )}
+            </div>
+
           ))}
         </div>
         <div className="filters">
@@ -76,7 +88,7 @@ class SideBar extends Component {
                   <div className="filter_item_text">{item}</div>
                 </div>
               ))}
-            {this.state.showAllSport == false && this.state.showSport && sportOptions &&(
+            {this.state.showAllSport == false && this.state.showSport && sportOptions && (
               <div
                 className="more-button-wrapper"
                 onClick={() => this.toggleMore("sport")}
@@ -93,12 +105,13 @@ class SideBar extends Component {
 }
 const mapDispatchToProps = (dispatch, props) => ({
   filterTypes: (types) => { dispatch(filterTypes(types)) },
-  getAllCategories: () => {
-    dispatch(getAllCategories());
-  }
+  filterByCategory: (types) => { dispatch(filterByCategory(types)) },
+  getAllCategories: () => { dispatch(getAllCategories()); },
+  getTypesByCategory: (categoryID) => { dispatch(getTypesByCategory(categoryID)); },
 });
 const mapStateToProps = (state, props) => ({
-  categories: state.shop.categories
+  categories: state.shop.categories,
+  typesByCategory: state.shop.typesByCategory
 });
 
 export default connect(

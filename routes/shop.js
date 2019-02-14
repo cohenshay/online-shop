@@ -6,5 +6,6 @@ const shopController = require('../controllers/shopController');
 router.post('/addItem', shopController.addItem);
 router.get('/getAllItems', shopController.getAllItems);
 router.get('/getAllCategories', shopController.getAllCategories);
+router.get('/category', shopController.getTypesByCategory);
 router.post('/filterTypes', shopController.filterTypes);
 module.exports = router;

@@ -95,6 +95,23 @@ let controller = {
     const categories = await Category.find({});
     res.status(200).send(categories);
   },
+  getTypesByCategory: async (req, res) => {
+    const categoryID = req.query.categoryID;
+    const category = await Category.findById(categoryID);
+    const types = category.types;
+    if (types.length > 0) {
+      const items = await Item.find({ type: { $in: types } });
+      const result = {category, types: [] };
+      types.forEach(type => {
+        const itms = items.filter(x => x.type == type);
+        result.types.push({ type, items: itms });
+      });
+      res.status(200).send(result);
+    }
+    else {
+      res.status(200).send({category, types: [] });
+    }
+  },
   filterTypes: async (req, res) => {
     const filters = req.body.types;
     if (filters && filters.length > 0) {
