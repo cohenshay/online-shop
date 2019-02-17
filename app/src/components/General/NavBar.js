@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import {logout} from '../../actions/auth';
 class NavBar extends Component {
   constructor() {
     super();
@@ -29,7 +29,7 @@ class NavBar extends Component {
               <Link to="/login">Login</Link>
             </li>
             <li className="nav-status-right_item">
-              <Link to="/logout">Logout</Link>
+              <div onClick={()=>this.props.logout()}>Logout</div>
             </li>
             <li className="nav-status-right_item">
               <img className="cart-img" src="./images/cart.png" />
@@ -104,7 +104,9 @@ class NavBar extends Component {
     );
   }
 }
-const mapDispatchToProps = (dispatch, props) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout())
+});
 const mapStateToProps = (state, props) => ({});
 
 export default connect(

@@ -24,7 +24,7 @@ let ioHandler = io => {
           );
         }
         else {
-          io.emit("exit", users);
+          io.emit("userList", users);
         }
       }
     });

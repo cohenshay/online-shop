@@ -61,10 +61,14 @@ class ChatPage extends Component {
       </div>
     )
   }
-
+  checkResponse = (response)=>{
+    if(response.status==401){
+      this.props.history.push("/");
+    }
+  }
   componentDidMount() {
 
-    this.props.getRoomMessages(this.state.roomName);
+    this.props.getRoomMessages(this.state.roomName,this.checkResponse);
 
 
 
@@ -83,7 +87,8 @@ class ChatPage extends Component {
 
     this.state.socket.on('exit', (userList) => {
       console.log("exit", userList)
-      this.setState({ userList });
+      this.props.history.push("/");
+      this.setState({userList:[]  });
     });
 
     this.state.socket.on('sendMsg', (data) => {
@@ -138,8 +143,8 @@ class ChatPage extends Component {
   }
 }
 const mapDispatchToProps = (dispatch, props) => ({
-  getRoomMessages: (roomName) => {
-    dispatch(getRoomMessages(roomName));
+  getRoomMessages: (roomName,callback) => {
+    dispatch(getRoomMessages(roomName,callback));
   },
   setRoomMessages: (roomName, msg) => {
     dispatch(setRoomMessages(roomName, msg));
