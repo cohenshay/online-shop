@@ -35,7 +35,6 @@ let controller = {
         res.status(200).send(messages);
     },
     getRoomMessages: async (req, res) => {
-
         var userId = req.decoded._id;
      
         const user = await User.findById(userId);

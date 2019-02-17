@@ -17,10 +17,8 @@ class NavBar extends Component {
     };
   }
   toggleMenu = (menuName, status) => {
-    if (menuName == "Men") {
       var element = document.querySelector(".nav-expand");
       element.style.display = status == "open" ? "block" : "none";
-    }
   };
   render() {
     return (

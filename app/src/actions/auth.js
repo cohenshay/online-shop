@@ -11,6 +11,7 @@ export const signin = (params) => {
   return function (dispatch) {
     axios.post(`http://localhost:5000/auth/signin`, data)
       .then((response) => {
+        
         //set token to local storage so when refreshing the app won't need to login again
         localStorage.setItem('clientToken', response.data.token);
         localStorage.setItem('currentUser', JSON.stringify(response.data.user));

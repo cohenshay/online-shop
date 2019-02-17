@@ -13,7 +13,6 @@ const User = mongoose.model("users");
 
 let controller = {
     signup: (req, res) => {
-        
         bcrypt.hash(req.body.password, 10, function (err, hash) {
             if (err) {
                 return res.status(500).json({
@@ -44,6 +43,7 @@ let controller = {
         });
     },
     signin: (req, res) => {
+        
 
         User.findOne({ email: req.body.email })
             .exec()
@@ -69,7 +69,7 @@ let controller = {
                 });
             })
             .catch(error => {
-                console.log("signin error: "+err);
+                console.log("signin error: "+error);
                 res.status(500).json({
                     error
                 });

@@ -50,7 +50,7 @@ let controller = {
     let itemImg1 = req.files[1];
     let itemImg2 = req.files[2];
     let itemImg3 = req.files[3];
-    debugger
+    
     console.log("files", req.files);
     upload(req, res, function (err) {
       if (err) {

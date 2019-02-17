@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NavBar from "../General/NavBar";
 import SideBar from "../General/SideBar";
 import Item from "../Items/Item";
 import { getAllItems } from '../../actions/shop';
@@ -9,12 +8,7 @@ class Main extends Component {
   constructor() {
     super();
     this.state = {
-      images: [{
-        "main": "air-vapormax/air-vapormax-1.png",
-        "all": ["air-vapormax/air-vapormax-1.png",
-          "air-vapormax/air-vapormax-2.png",
-          "air-vapormax/air-vapormax-3.png"]
-      }]
+     
     };
   }
   componentDidMount = () => {
@@ -22,8 +16,7 @@ class Main extends Component {
   }
   render() {
     return (
-      <div className="main">
-        <NavBar />
+      
         <div className="content_category_wrapper">
           <SideBar />
           <div className="items-wrapper">
@@ -32,7 +25,6 @@ class Main extends Component {
             ))}
           </div>
         </div>
-      </div>
     );
   }
 }

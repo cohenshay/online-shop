@@ -38,7 +38,6 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
-//app.use(fileUpload({limits: { fileSize: 50 * 1024 * 1024 }, useTempFiles : false}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,15 +54,15 @@ var storage = multer.diskStorage({
   }
 });
 app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/images/items/'),storage:storage}).any());
-// adds check token validation and return token decoded
-app.use("/api/", jwtAuthenticator);
 
-
+//private routes (needs auth)
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/api/user', userRouter);
-app.use('/api/room', roomRouter);
-app.use('/api/message', messageRouter);
+app.use('/api/user', jwtAuthenticator,userRouter);
+app.use('/api/room', jwtAuthenticator,roomRouter);
+app.use('/api/message', jwtAuthenticator,messageRouter);
+app.use('/chat',jwtAuthenticator);
+//public routes
 app.use('/api/shop/', shopRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

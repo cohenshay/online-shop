@@ -1,4 +1,7 @@
 .side-bar {
+  input[type="checkbox"]{
+    cursor: pointer;
+  }
   float: left;
   width: 276px;
   margin-left: 30px;
@@ -7,6 +10,7 @@
     padding-top: 10px;
     .side-bar_item {
       padding: 7px 0;
+      cursor: pointer;
     }
     .category-types{
       margin-left: 20px;
@@ -40,7 +44,8 @@
       .filter-item-wrapper {
         padding: 1px 0;
         .filter_item_text {
-          margin-left: 9px;
+          padding-left:9px;
+          cursor: pointer;
         }
       }
     }

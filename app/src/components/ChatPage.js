@@ -71,7 +71,8 @@ class ChatPage extends Component {
     this.state.socket.on("connect", (err) => {
       if (err)
         return console.log(err);
-      this.state.socket.emit('join', { username: this.props.currentUser.username });
+        
+      this.state.socket.emit('join', this.props.currentUser );
     });
 
     this.state.socket.on('userList', (userList, socketId) => {
@@ -101,7 +102,7 @@ class ChatPage extends Component {
           <div id="users">
             {this.state.userList.length > 0 &&
               <ol>
-                {this.state.userList.map((user, index) => <li key={index} onClick={() => { this.sendPrivateMessage(user) }}>{user.userName.username}</li>)}
+                {this.state.userList.map((user, index) => <li key={index} onClick={() => { this.sendPrivateMessage(user) }}>{user.username}</li>)}
               </ol>
             }
           </div>

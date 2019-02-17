@@ -3,22 +3,29 @@ const { generateMessage } = require("../utils/message");
 let ioHandler = io => {
   let users = [];
   io.on("connection", socket => {
-    socket.on("join", userName => {
-      if (userName) {
-        users.push({
-          id: socket.id,
-          userName: userName
-        });
+    socket.on("join", currentUser => {
+      
+      if (currentUser) {
+        if (!users.filter(x => x.userId == currentUser._id).length > 0) {
+          users.push({
+            id: socket.id,
+            username: currentUser.username,
+            userId: currentUser._id
+          });
 
-        let len = users.length;
-        len--;
+          let len = users.length;
+          len--;
 
-        io.emit("userList", users, users[len].id);
+          io.emit("userList", users, users[len].id);
 
-        socket.emit(
-          "getMsg",
-          generateMessage("Admin", "Welcome to the chat app")
-        );
+          socket.emit(
+            "getMsg",
+            generateMessage("Admin", "Welcome to the chat app")
+          );
+        }
+        else {
+          io.emit("exit", users);
+        }
       }
     });
 

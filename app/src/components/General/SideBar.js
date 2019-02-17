@@ -60,7 +60,7 @@ class SideBar extends Component {
       <div className="side-bar">
         <div className="side-bar-caegories">
           {this.props.categories && this.props.categories.map((item, index) => (
-            <div className={`side-bar_item ${this.state.currentCategory==item._id? "chosen-category":""}`} key={index} onClick={() => this.handleCategory(item._id)}>{item.name}
+            <div className={`side-bar_item${this.state.currentCategory==item._id? " chosen-category":""}`} key={index} onClick={() => this.handleCategory(item._id)}>{item.name}
               {this.props.typesByCategory && this.props.typesByCategory.category.name == item.name &&
                 this.props.typesByCategory.types && this.props.typesByCategory.types.map((item, index) =>
                   <div key={index} onClick={()=>this.handleTypeClick(item)} className="category-types">{item.type}{`(${item.items && item.items.length})`}</div>
