@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
-import { getRoomMessages, setRoomMessages } from '../actions/roomMessages';
+import { getRoomMessages, setRoomMessages, getRooms } from '../actions/roomMessages';
 import Moment from 'react-moment';
 class ChatPage extends Component {
   constructor() {
@@ -13,7 +13,7 @@ class ChatPage extends Component {
       currentMessage: null,
       messages: [],
       userList: [],
-      roomName: "a",
+      roomName: null
     };
   }
   componentWillReceiveProps(nextProps, prevState) {
@@ -61,22 +61,30 @@ class ChatPage extends Component {
       </div>
     )
   }
-  checkResponse = (response)=>{
-    if(response.status==401){
+  checkResponse = (response) => {
+    if (response.status == 401) {
       this.props.history.push("/");
     }
   }
+  enterRoom = (roomName) => {
+    this.state.socket.emit('join',  this.props.currentUser,roomName);
+    this.setState({roomName});
+  }
   componentDidMount() {
 
-    this.props.getRoomMessages(this.state.roomName,this.checkResponse);
-
-
+    // this.props.getRoomMessages(this.state.roomName,this.checkResponse);
+    this.props.getRooms();
 
     this.state.socket.on("connect", (err) => {
       if (err)
         return console.log(err);
-        
-      this.state.socket.emit('join', this.props.currentUser );
+
+      this.state.socket.emit('join', this.props.currentUser, "general");
+    });
+
+
+    this.state.socket.on('sendRooms', (rooms) => {
+      console.log("rooms", rooms)
     });
 
     this.state.socket.on('userList', (userList, socketId) => {
@@ -87,18 +95,19 @@ class ChatPage extends Component {
 
     this.state.socket.on('exit', (userList) => {
       console.log("exit", userList)
-      this.props.history.push("/");
-      this.setState({userList:[]  });
+      this.setState({ userList: userList });
     });
 
-    this.state.socket.on('sendMsg', (data) => {
-      this.setState((prevState) => ({ messages: [...prevState.messages, data] }));
+    this.state.socket.on('sendMsg', (message) => {
+      console.log(message)
+      //this.setState((prevState) => ({ messages: [...prevState.messages, message] }));
     });
 
     this.state.socket.on('sendRoomMsg', (data) => {
       this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
     });
   }
+
   render() {
     return (
       <div className="chatPage">
@@ -107,7 +116,7 @@ class ChatPage extends Component {
           <div id="users">
             {this.state.userList.length > 0 &&
               <ol>
-                {this.state.userList.map((user, index) => <li key={index} onClick={() => { this.sendPrivateMessage(user) }}>{user.username}</li>)}
+                {this.state.userList.filter(x=>x.roomName==this.state.roomName).map((user, index) => <li key={index} onClick={() => { this.sendPrivateMessage(user) }}>{user.username}</li>)}
               </ol>
             }
           </div>
@@ -132,6 +141,13 @@ class ChatPage extends Component {
               <button onClick={(e) => { this.sendRoomMessage(this.state.currentMessage) }}>Send</button>
             </div>
           </div>
+          <b>Rooms</b>
+          {
+            this.props.rooms && this.props.rooms.map((room, index) =>
+              <div key={index}
+                className="rooms-names"
+                onClick={() => this.enterRoom(room.name)}>{room.name}</div>)
+          }
         </div>
 
 
@@ -143,8 +159,11 @@ class ChatPage extends Component {
   }
 }
 const mapDispatchToProps = (dispatch, props) => ({
-  getRoomMessages: (roomName,callback) => {
-    dispatch(getRoomMessages(roomName,callback));
+  getRoomMessages: (roomName, callback) => {
+    dispatch(getRoomMessages(roomName, callback));
+  },
+  getRooms: () => {
+    dispatch(getRooms());
   },
   setRoomMessages: (roomName, msg) => {
     dispatch(setRoomMessages(roomName, msg));
@@ -152,7 +171,8 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 const mapStateToProps = (state, props) => ({
   roomMessages: state.roomMessages.roomMessages,
-  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser"))
+  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
+  rooms: state.roomMessages.rooms,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);

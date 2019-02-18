@@ -6,23 +6,23 @@ require('../models/user');
 
 const Message = mongoose.model("messages");
 const User = mongoose.model("users");
-
+const Room = mongoose.model("rooms");
 let controller = {
-    saveRoomMessage: async (req, res) => {       
-        const { text, receiver, roomName,sender } = req.body;
-        const createdAt =moment().valueOf();
+    saveRoomMessage: async (req, res) => {
+        const { text, receiver, roomName, sender } = req.body;
+        const createdAt = moment().valueOf();
 
         let message = new Message({
             text, sender, receiver, roomName, createdAt
         })
-        console.log("saveRoomMessage",message);
+        console.log("saveRoomMessage", message);
         try {
             message = await message.save();
-            res.status(200).send(message); 
+            res.status(200).send(message);
         } catch (error) {
-            console.log("Error saveRoomMessage: ",error)
+            console.log("Error saveRoomMessage: ", error)
         }
-     
+
     },
     getPrivateMessages: async (req, res) => {
         //TODO filters
@@ -36,11 +36,11 @@ let controller = {
     },
     getRoomMessages: async (req, res) => {
         var userId = req.decoded._id;
-     
+
         const user = await User.findById(userId);
         if (user) {
             //TODO permissions
-            const roomName = req.query.roomName;        
+            const roomName = req.query.roomName;
             const messages = await Message.find({ roomName });
 
             res.status(200).send(messages);
@@ -50,7 +50,8 @@ let controller = {
                 error: "user does not registered to this room"
             })
         }
-    },
+    }
+  
 }
 
 module.exports = controller;

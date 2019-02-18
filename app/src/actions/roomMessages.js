@@ -39,3 +39,21 @@ export const setRoomMessages = (msg) => {
             })).catch((err) => console.log(err))
     }
 }
+export const getRooms = (msg) => {
+    return (dispatch, getState) => {
+
+        const config = {
+            headers: {
+                authorization: getState().auth.uid || localStorage.getItem('clientToken'),
+            }
+        }
+
+
+
+        axios.get(`http://localhost:5000/api/room/getRooms`, config)
+            .then((response) => dispatch({
+                type: "GET_ROOMS",
+                data: response.data
+            })).catch((err) => console.log(err))
+    }
+}

@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const roomSchema = new Schema({
-  roomName: String,  
+  admin:String,
+  name: String,  
 });
 
 mongoose.model("rooms", roomSchema);

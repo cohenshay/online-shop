@@ -50,7 +50,7 @@ let controller = {
     let itemImg1 = req.files[1];
     let itemImg2 = req.files[2];
     let itemImg3 = req.files[3];
-    
+
     console.log("files", req.files);
     upload(req, res, function (err) {
       if (err) {
@@ -101,7 +101,7 @@ let controller = {
     const types = category.types;
     if (types.length > 0) {
       const items = await Item.find({ type: { $in: types } });
-      const result = {category, types: [] };
+      const result = { category, types: [] };
       types.forEach(type => {
         const itms = items.filter(x => x.type == type);
         result.types.push({ type, items: itms });
@@ -109,7 +109,7 @@ let controller = {
       res.status(200).send(result);
     }
     else {
-      res.status(200).send({category, types: [] });
+      res.status(200).send({ category, types: [] });
     }
   },
   filterTypes: async (req, res) => {

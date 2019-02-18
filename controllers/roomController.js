@@ -12,65 +12,67 @@ const User = mongoose.model("users");
 
 
 let controller = {
-    createRoom: (req, res) => {
-        //get admin from cookie
-     
-        const { roomName, admin } = req.body;
-        const createDate = moment().valueOf();
-        const permissions = [], postsID = [], messagesID = [], loggedUsers = [];
-        const room = new Room({
-            _id: new mongoose.Types.ObjectId(),
-            roomName,
-            admin,
-            createDate,
-            loggedUsers,
-            permissions,
-            postsID,
-            messagesID
-        });
-        room.save().then(function (result) {
-        
-            res.status(200).json({
-                success: 'New room has been created'
-            });
-        }).catch(error => {
-            res.status(500).json({
-                error
-            });
-        });
-    },
-    joinRoom: async (req, res) => {
-        //get userid from cookie
-        const { roomName, userId } = req.body;
-        const room = await Room.findOne({ roomName });
-        if (room) {
-            room.loggedUsers.push(userId);
-            Room.findByIdAndUpdate(userId, room, { new: true }, (err, newRoom) => {
-                // Handle any possible database errors
-                if (err) return res.status(500).send(err);
-                return res.send(newRoom);
-            })
+    // createRoom: (req, res) => {
+    //     //get admin from cookie
 
-        }
-    },
-    getRoom: async (req, res) => {
-        var userId = req.decoded._id;
-        User.findOne({ _id: userId }).then(function (user) {
+    //     const { roomName, admin } = req.body;
+    //     const createDate = moment().valueOf();
+    //     const permissions = [], postsID = [], messagesID = [], loggedUsers = [];
+    //     const room = new Room({
+    //         _id: new mongoose.Types.ObjectId(),
+    //         roomName,
+    //         admin,
+    //         createDate,
+    //         loggedUsers,
+    //         permissions,
+    //         postsID,
+    //         messagesID
+    //     });
+    //     room.save().then(function (result) {
 
-            const { roomName } = req.query;
+    //         res.status(200).json({
+    //             success: 'New room has been created'
+    //         });
+    //     }).catch(error => {
+    //         res.status(500).json({
+    //             error
+    //         });
+    //     });
+    // },
+    // joinRoom: async (req, res) => {
+    //     //get userid from cookie
+    //     const { roomName, userId } = req.body;
+    //     const room = await Room.findOne({ roomName });
+    //     if (room) {
+    //         room.loggedUsers.push(userId);
+    //         Room.findByIdAndUpdate(userId, room, { new: true }, (err, newRoom) => {
+    //             // Handle any possible database errors
+    //             if (err) return res.status(500).send(err);
+    //             return res.send(newRoom);
+    //         })
 
-            Room.findOne({ roomName }).then((room) => {
-                var roomIns = JSON.parse(JSON.stringify(room))
-                //TODO add permissions.includes(user._id)                  
-                if (roomIns.permissions != null && roomIns.permissions.length > 0) {
-                    return res.send(roomIns);
-                }
-            }).catch(error => {
-                res.status(500).json({
-                    error
-                });
-            });
-        });
+    //     }
+    // },
+    getRooms: async (req, res) => {
+        // var userId = req.decoded._id;
+        // User.findOne({ _id: userId }).then(function (user) {
+
+        //     const { roomName } = req.query;
+
+        //     Room.findOne({ roomName }).then((room) => {
+        //         var roomIns = JSON.parse(JSON.stringify(room))
+        //         //TODO add permissions.includes(user._id)                  
+        //         if (roomIns.permissions != null && roomIns.permissions.length > 0) {
+        //             return res.send(roomIns);
+        //         }
+        //     }).catch(error => {
+        //         res.status(500).json({
+        //             error
+        //         });
+        //     });
+        // });
+        const messages = await Room.find({});
+        res.status(200).send(messages);
     },
     deleteRoom: async (req, res) => {
         var userId = req.decoded._id;
@@ -86,7 +88,7 @@ let controller = {
                 });
             })
         }
-    },   
+    },
 }
 
 
