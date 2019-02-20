@@ -10,7 +10,6 @@ class Item extends Component {
       imagesPrefix: "./images/items/",
       goodRanking: 10,
       badRanking: 2,
-      price: 190,
       mainImage: "",
     };
   }
@@ -20,9 +19,15 @@ class Item extends Component {
   toggleMenu = e => {
     this.setState(prevState => ({ isHovered: !prevState.isHovered }));
   };
+  renderItemDetails=()=>{
+    this.props.renderItemDetails(this.props.item)
+  }
   render() {
     return (
-      <div className={`item-wrapper ${this.state.isHovered ? "hovered" : ""}`} onMouseEnter={e => this.toggleMenu(e, "open")} onMouseLeave={e => this.toggleMenu(e, "close")} >
+      <div className={`item-wrapper ${this.state.isHovered ? "hovered" : ""}`}
+       onMouseEnter={e => this.toggleMenu(e, "open")}
+       onMouseLeave={e => this.toggleMenu(e, "close")} 
+       onClick={()=>this.renderItemDetails()}>
         <img className="item_img" src={`${this.state.imagesPrefix}${this.state.mainImage}`} />
         <div className={`image-slider-wrapper ${this.state.isHovered ? "hovered" : ""}`}>
           {this.props.images.map((item, index) => (

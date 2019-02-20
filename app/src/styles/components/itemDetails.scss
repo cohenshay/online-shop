@@ -1,0 +1,18 @@
+.item-details-container {
+    overflow: hidden;
+    .right-sidebar-container {
+        float: right;
+        width: 25%;
+    }
+    .item-images {
+        width: 64%;
+        float: left;
+        margin-left: 67px;
+    }
+    .images-row{
+        img.item-details_image {
+            width: 45%;
+            margin-left: 5px;
+        }
+    }
+}

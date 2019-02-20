@@ -8,23 +8,29 @@ class Main extends Component {
   constructor() {
     super();
     this.state = {
-     
+
     };
   }
   componentDidMount = () => {
     this.props.getAllItems();
   }
+  renderItemDetails = (item) => {
+    this.props.history.push("/ItemDetails",item)
+  }
   render() {
     return (
-      
-        <div className="content_category_wrapper">
-          <SideBar />
-          <div className="items-wrapper">
-            {this.props.items && this.props.items.length>0 && this.props.items.map((item, index) => (
-              <Item  mainImagePath={item.mainImagePath} images={[item.image1Path, item.image2Path, item.image3Path]} item={item} key={index} />
-            ))}
-          </div>
+
+      <div className="content_category_wrapper">
+        <SideBar />
+        <div className="items-wrapper">
+          {this.props.items && this.props.items.length > 0 && this.props.items.map((item, index) => (
+            <Item mainImagePath={item.mainImagePath}
+              images={[item.image1Path, item.image2Path, item.image3Path]}
+              item={item} key={index} 
+              renderItemDetails={this.renderItemDetails}/>
+          ))}
         </div>
+      </div>
     );
   }
 }
