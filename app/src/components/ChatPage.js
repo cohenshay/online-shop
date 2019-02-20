@@ -24,11 +24,11 @@ class ChatPage extends Component {
   sendPrivateMessage = (user) => {
     const message = {
       toid: user.id,
-      msg: "motherfucker!!!",
+      msg: "test",
       name: this.props.currentUser.username
     }
 
-    this.state.socket.emit('getMsg', message);
+    this.state.socket.emit('getPrivateMessage', message);
   }
 
   sendRoomMessage = (msg) => {
@@ -42,7 +42,7 @@ class ChatPage extends Component {
     this.props.setRoomMessages(message);
     //send  
 
-    this.state.socket.emit('getRoomMsg', message);
+    this.state.socket.emit('getRoomMessage', message);
   }
   renderMessages = () => {
     return (
@@ -104,7 +104,8 @@ class ChatPage extends Component {
     });
 
     this.state.socket.on('sendRoomMsg', (data) => {
-      this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
+      console.log("message: ",data);
+      //this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
     });
   }
 

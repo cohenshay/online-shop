@@ -34,25 +34,26 @@ let ioHandler = io => {
       }
     });
 
-    socket.on("getMsg", data => {
+    socket.on("getPrivateMessage", data => {
+      console.log("getPrivateMessage",data);
       socket.broadcast.to(data.toid).emit("sendMsg", {
         msg: data.msg,
         name: data.name
       });
     });
 
-    socket.on("getRoomMsg", data => {
-      console.log(data);
-      socket.to(data.roomName).emit("sendRoomMsg", {
-        msg: data.msg,
-        name: data.name
+    socket.on("getRoomMessage", data => {
+      console.log("getRoomMessage",data);
+      io.sockets.in(data.roomName).emit("sendRoomMsg", {
+        msg: data.text,
+        name: data.sender
       });
     });
 
     socket.on("disconnect", () => {
       for (let i = 0; i < users.length; i++) {
         if (users[i].id === socket.id) {
-          users.splice(i, 1);
+          users = users.splice(i, 1);
         }
       }
       console.log("disconnect", users);
