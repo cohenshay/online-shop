@@ -3,7 +3,7 @@ import { Router, BrowserRouter, Route, Switch, Link, NavLink } from 'react-route
 import createHistory from 'history/createBrowserHistory';
 import DashboardPage from '../components/DashboardPage';
 import NotFoundPage from '../components/NotFoundPage';
-import ChatPage from '../components/ChatPage';
+import ChatPage from '../components/Chat/ChatPage';
 import LoginPage from '../components/LoginPage';
 import addItem from '../components/AddItem';
 import Main from '../components/Main/Main';

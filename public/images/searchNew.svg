@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>918DD121-EE29-4E64-B991-69FA9C702741</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M20.038696,18.3887802 L25.3249579,23.6750421 C25.7805696,24.1306538 25.7805696,24.8693462 25.3249579,25.3249579 C24.8693462,25.7805696 24.1306538,25.7805696 23.6750421,25.3249579 L18.3887802,20.038696 C16.7002721,21.3713457 14.5680146,22.1666667 12.25,22.1666667 C6.77317623,22.1666667 2.33333333,17.7268238 2.33333333,12.25 C2.33333333,6.77317623 6.77317623,2.33333333 12.25,2.33333333 C17.7268238,2.33333333 22.1666667,6.77317623 22.1666667,12.25 C22.1666667,14.5680146 21.3713457,16.7002721 20.038696,18.3887802 Z M17.6863854,17.5370339 C19.0150533,16.1710703 19.8333333,14.3060949 19.8333333,12.25 C19.8333333,8.06184065 16.4381594,4.66666667 12.25,4.66666667 C8.06184065,4.66666667 4.66666667,8.06184065 4.66666667,12.25 C4.66666667,16.4381594 8.06184065,19.8333333 12.25,19.8333333 C14.3060949,19.8333333 16.1710703,19.0150533 17.5370339,17.6863854 C17.5594238,17.6595817 17.5832043,17.6335466 17.6083754,17.6083754 C17.6335466,17.5832043 17.6595817,17.5594238 17.6863854,17.5370339 Z" id="path-1"></path>
+    </defs>
+    <g id="team" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="team-main" transform="translate(-38.000000, -17.000000)">
+            <g id="header-light">
+                <g id="search" transform="translate(36.000000, 15.000000)">
+                    <rect id="Background" x="0" y="0" width="28" height="28"></rect>
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Combined-Shape" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    <g id="COLOR/-black" mask="url(#mask-2)">
+                        <rect id="Background" x="0" y="0" width="28" height="28"></rect>
+                        <rect id="Rectangle" fill="#0d47a1" fill-rule="nonzero" x="0" y="0" width="28" height="28"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

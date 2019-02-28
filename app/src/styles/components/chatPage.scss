@@ -1,79 +1,203 @@
-.chatPage {
-  margin-top: 96px;
-  box-sizing: border-box;
-  padding: 0;
-  font-family: HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 300;
-  font-size: 1.5rem !important;
-  .chat__sidebar {
-    overflow-y: scroll;
-    width: 260px;
-    height: 100vh;
-    background: -moz-linear-gradient(
-      125deg,
-      rgba(39, 107, 130, 1) 0,
-      rgba(49, 84, 129, 1) 100%
-    );
-    background: -webkit-gradient(
-      linear,
-      left top,
-      right bottom,
-      color-stop(0, rgba(49, 84, 129, 1)),
-      color-stop(100%, rgba(39, 107, 130, 1))
-    );
-    background: -webkit-linear-gradient(
-      125deg,
-      rgba(39, 107, 130, 1) 0,
-      rgba(49, 84, 129, 1) 100%
-    );
-    background: -o-linear-gradient(
-      125deg,
-      rgba(39, 107, 130, 1) 0,
-      rgba(49, 84, 129, 1) 100%
-    );
-    background: -ms-linear-gradient(
-      125deg,
-      rgba(39, 107, 130, 1) 0,
-      rgba(49, 84, 129, 1) 100%
-    );
-    background: linear-gradient(
-      325deg,
-      rgba(39, 107, 130, 1) 0,
-      rgba(49, 84, 129, 1) 100%
-    );
-    h3 {
-      color: #e6eaee;
-      margin: 10px 20px;
-      text-align: left;
-      font-weight: 600;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    li {
-      border: 1px solid #e1e1e1;
-      border-radius: 5px;
-      margin: 10px;
-      background: #e6eaee;
-      padding: 10px;
-      list-style-position: inside;
-    }
-  }
-  .chat__sidebar{
-    float: left;
-  }
-  .chat__main{
-    float: right;
-    width: 74%;
-  }
-  .message__title h4 {
-    font-weight: 600;
-    margin-right: 10px;
-    font-size: 1.35rem;
-    span{
-      font-size: 1.35rem;
-      color: grey
-    }
-  }
+$imagesPath:"/images";
 
+.chatPage {
+    body {
+        margin: 0;
+        direction: ltr;
+        padding: 0;
+        text-align: left;
+    }
+    .poeplesWrap {
+        width: 20%;
+        float: left;
+        background-color: #0d47a1;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+    }
+    .poeple {
+        float: left;
+        width: calc(100% - 40px);
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+    .poepleImg {
+        float: left;
+        width: 50px;
+        height: 50px;
+    }
+    .poepleImg img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+    }
+    .poepleText {
+        float: left;
+        margin: 15px 0 0 20px;
+        color: white;
+    }
+    .poeplesWrap .title {
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        margin: 20px;
+        font-size: 45px;
+    }
+    .mainContent {
+        float: left;
+        width: calc(80% - 40px);
+        padding: 20px;
+        margin-left: 20%;
+    }
+    .search {
+        float: left;
+        border: 2px solid #0d47a1;
+        background: url(#{$imagesPath}/searchnew.svg) no-repeat;
+        border-radius: 5px;
+        padding: 10px 0 10px 30px;
+        background-position: center left 5px;
+        width: 50%;
+    }
+    .search input {
+        padding: 10px;
+        width: calc(100% - 20px);
+        border: none;
+    }
+    .allOpinions {
+        float: left;
+        width: 100%;
+    }
+    .opinionWrap {
+        padding: 20px;
+        border: 2px solid #0d47a1;
+        float: left;
+        margin-top: 20px;
+        width: calc(100% - 40px);
+    }
+    .opinionWrap .poeple {
+        width: 100px;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        margin-right: 20px;
+    }
+    .opinionWrap .poepleImg {
+        float: none;
+        margin: auto;
+    }
+    .opinionWrap .poepleText {
+        color: #0d47a1;
+        width: calc(100% - 10px);
+        margin: 0px;
+        padding: 5px;
+    }
+    .textOpinionWrap {
+        float: left;
+        width: calc(100% - 120px);
+        margin-bottom: 10px;
+    }
+    .textOpinionWrap .title {
+        font-weight: bold;
+    }
+    .dateOpinion {
+        float: right;
+        color: #777b80;
+        font-size: 12px;
+    }
+    
+    .replay img {
+        width: 50px;
+    }
+    .productImg {
+        float: right;
+        width: 150px;
+        margin-right: 20px;
+    }
+    .productImg img {
+        width: 150px;
+    }
+    .productText {
+        width: calc(100% - 170px);
+    }
+    .unlike{
+      width: 35px !important;
+    }
+    
+    // margin-top: 96px;
+    // box-sizing: border-box;
+    // padding: 0;
+    // font-family: HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue",
+    //   Helvetica, Arial, "Lucida Grande", sans-serif;
+    // font-weight: 300;
+    // font-size: 1.5rem !important;
+    // .chat__sidebar {
+    //   overflow-y: scroll;
+    //   width: 260px;
+    //   height: 100vh;
+    //   background: -moz-linear-gradient(
+    //     125deg,
+    //     rgba(39, 107, 130, 1) 0,
+    //     rgba(49, 84, 129, 1) 100%
+    //   );
+    //   background: -webkit-gradient(
+    //     linear,
+    //     left top,
+    //     right bottom,
+    //     color-stop(0, rgba(49, 84, 129, 1)),
+    //     color-stop(100%, rgba(39, 107, 130, 1))
+    //   );
+    //   background: -webkit-linear-gradient(
+    //     125deg,
+    //     rgba(39, 107, 130, 1) 0,
+    //     rgba(49, 84, 129, 1) 100%
+    //   );
+    //   background: -o-linear-gradient(
+    //     125deg,
+    //     rgba(39, 107, 130, 1) 0,
+    //     rgba(49, 84, 129, 1) 100%
+    //   );
+    //   background: -ms-linear-gradient(
+    //     125deg,
+    //     rgba(39, 107, 130, 1) 0,
+    //     rgba(49, 84, 129, 1) 100%
+    //   );
+    //   background: linear-gradient(
+    //     325deg,
+    //     rgba(39, 107, 130, 1) 0,
+    //     rgba(49, 84, 129, 1) 100%
+    //   );
+    //   h3 {
+    //     color: #e6eaee;
+    //     margin: 10px 20px;
+    //     text-align: left;
+    //     font-weight: 600;
+    //     text-align: center;
+    //     font-size: 1.5rem;
+    //   }
+    //   li {
+    //     border: 1px solid #e1e1e1;
+    //     border-radius: 5px;
+    //     margin: 10px;
+    //     background: #e6eaee;
+    //     padding: 10px;
+    //     list-style-position: inside;
+    //   }
+    // }
+    // .chat__sidebar{
+    //   float: left;
+    // }
+    // .chat__main{
+    //   float: right;
+    //   width: 74%;
+    // }
+    // .message__title h4 {
+    //   font-weight: 600;
+    //   margin-right: 10px;
+    //   font-size: 1.35rem;
+    //   span{
+    //     font-size: 1.35rem;
+    //     color: grey
+    //   }
+    // }
 }
