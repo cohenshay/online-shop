@@ -15,8 +15,10 @@ const moment=require('./helpers/moment');
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
-const roomRouter = require('./routes/room');
-const messageRouter = require('./routes/message');
+// const roomRouter = require('./routes/room');
+// const messageRouter = require('./routes/message');
+const privateMessageRouter = require('./routes/privateMessages');
+const roomMessagesRouter = require('./routes/roomMessages');
 const shopRouter = require('./routes/shop');
 const http = require('http');
 
@@ -59,8 +61,10 @@ app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/image
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/api/user', jwtAuthenticator,userRouter);
-app.use('/api/room', jwtAuthenticator,roomRouter);
-app.use('/api/message', jwtAuthenticator,messageRouter);
+// app.use('/api/room', jwtAuthenticator,roomRouter);
+// app.use('/api/message', jwtAuthenticator,messageRouter);
+app.use('/api/privateMessages', jwtAuthenticator,privateMessageRouter);
+app.use('/api/roomMessages', jwtAuthenticator,roomMessagesRouter);
 app.use('/chat',jwtAuthenticator);
 //public routes
 app.use('/api/shop/', shopRouter);
