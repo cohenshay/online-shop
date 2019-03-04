@@ -17,6 +17,7 @@ const messageSchema = new Schema({
     username:String,
     sender:String,
     likes: [likesSchema],
+    disLikes: [likesSchema],
 });
 
 

@@ -36,6 +36,21 @@ export const setRoomMessages = (msg) => {
             .then((response) =>console.log("setRoomMessages success",response) ).catch((err) => console.log(err))
     }
 }
+export const saveLike = (data) => {
+    return (dispatch, getState) => {
+
+        const config = {
+            headers: {
+                authorization: getState().auth.uid || localStorage.getItem('clientToken'),
+            }
+        }
+
+
+
+        axios.post(`http://localhost:5000/api/roomMessages/saveLike`, data, config)
+            .then((response) =>console.log("saveLike success",response) ).catch((err) => console.log(err))
+    }
+}
 // export const getRooms = (msg) => {
 //     return (dispatch, getState) => {
 

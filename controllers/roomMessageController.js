@@ -47,17 +47,26 @@ let controller = {
         }
     },
     saveLike: async (req, res) => {
-        const { subject, messageLiked, sender } = req.body;
+        const { subject, messageId, type } = req.body;
         const currentUserId = req.decoded._id;
         const createdAt = moment.utc();
 
         let like = { createdAt, "sender": currentUserId }
-
-        try {
-            updatedMessage = await roomMessagesModel.updateOne({ subject, "messages.message": messageLiked, "messages.sender": sender }, { $push: { "likes": like } })
-            res.status(200).send(updatedMessage);
-        } catch (error) {
-            console.log("Error saveLike: ", error)
+        if (type == "like") {
+            try {
+                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.0.likes": like } })
+                res.status(200).send(updatedMessage);
+            } catch (error) {
+                console.log("Error saveLike: ", error)
+            }
+        }
+        else if (type == "disLike") {
+            try {
+                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.0.disLike": like } })
+                res.status(200).send(updatedMessage);
+            } catch (error) {
+                console.log("Error saveDisLike: ", error)
+            }
         }
 
     },

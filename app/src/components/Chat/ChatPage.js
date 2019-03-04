@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
-import { getRoomMessages, setRoomMessages, getRooms } from '../../actions/roomMessages';
+import { getRoomMessages, setRoomMessages, saveLike } from '../../actions/roomMessages';
 import ConnectedUsers from './components/ConnectedUsers';
 const moment = require('moment');
 
@@ -63,7 +63,7 @@ class ChatPage extends Component {
   componentDidMount() {
     const subject = this.props.match.params.subject;
     this.props.getRoomMessages({ subject }, this.checkResponse)
-   
+
     this.state.socket.on("connect", (err) => {
       if (err)
         return console.log(err);
@@ -105,6 +105,47 @@ class ChatPage extends Component {
     const cons = e.target.value;
     this.setState({ cons })
   }
+  sendDisLike = (message, index) => {
+    let data = {
+      messageId: message._id,
+      subject: this.props.match.params.subject,
+      type: "disLike"
+    }
+    let like = {
+      sender: this.props.currentUser,
+      createdAt: moment.utc().toString(),
+    }
+    this.setState(prevState => ({
+      roomMessages: {
+        ...(prevState.roomMessages.filter(x => x._id != message._id)),
+        ...(prevState.roomMessages.filter(x => x._id == message._id).likes.push(like))
+      },
+    }));
+    this.props.saveLike(data);
+  }
+  sendLike = (message, index) => {
+    let data = {
+      messageId: message._id,
+      subject: this.props.match.params.subject,
+      type: "disLike"
+    }
+    let like = {
+      sender: this.props.currentUser,
+      createdAt: moment.utc().toString(),
+    }
+    this.setState((previousState, currentProps) => {
+      let otherMessage = previousState.roomMessages.filter(x => x._id != message._id);
+      let messageUpdate = previousState.roomMessages.filter(x => x._id == message._id)[0];
+      messageUpdate.likes.push(like);
+      otherMessage.splice(index, 0, messageUpdate);
+     
+      return {
+        roomMessages: otherMessage
+      };
+    });
+
+    this.props.saveLike(data);
+  }
   render() {
 
     return (
@@ -117,9 +158,9 @@ class ChatPage extends Component {
           <div className="search">
             <input type="text" name="name" value="" placeholder="חפש חוות דעת" />
           </div>
-         
+
           <div className="allOpinions">
-            {this.state.roomMessages && this.state.roomMessages.length>0 && this.state.roomMessages.map((message, index) =>
+            {this.state.roomMessages && this.state.roomMessages.length > 0 && this.state.roomMessages.map((message, index) =>
               <div className="opinionWrap" key={index}>
                 <div className="poeple">
                   <div className="poepleImg">
@@ -127,8 +168,8 @@ class ChatPage extends Component {
                   </div>
                   <div className="poepleText">{message.username}</div>
                   <div className="replay">
-                    <img src={window.location.origin + "/images/like.png"} />
-                    <img src={window.location.origin + "/images/unlike.png"} className="unlike" />
+                    <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} />{message.likes && message.likes.length}
+                    <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} />{message.disLikes && message.disLikes.length}
                   </div>
                 </div>
                 <div className="textOpinionWrap">
@@ -207,6 +248,9 @@ class ChatPage extends Component {
 const mapDispatchToProps = (dispatch, props) => ({
   getRoomMessages: (roomName, callback) => {
     dispatch(getRoomMessages(roomName, callback));
+  },
+  saveLike: (data) => {
+    dispatch(saveLike(data));
   },
   // getRooms: () => {
   //   dispatch(getRooms());
