@@ -32,7 +32,7 @@ class NavBar extends Component {
               <div onClick={()=>this.props.logout()}>Logout</div>
             </li>
             <li className="nav-status-right_item">
-              <img className="cart-img" src="./images/cart.png" />
+              <img className="cart-img" src={window.location.origin+ "/images/cart.png"} />
             </li>
           </ul>
           <ul className="nav-status-left_item-wrapper">

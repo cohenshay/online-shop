@@ -48,6 +48,7 @@ class ItemDetails extends Component {
                         <div className="description">
                             {this.state.item.description}
                         </div>
+                        <Link to={`/chat/${this.state.item.name}`} params={{subject:this.state.item.name}}>Chat</Link>
                     </div>
                     <div className="item-images">
                         <div className="images-row">

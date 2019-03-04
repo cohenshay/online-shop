@@ -1,15 +1,9 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const basicMessageSchema = new Schema({
-    message:String,
-    createdAt:Date,
-    sender:String
-});
 
-const replaysSchema = new Schema({
-    messages: [basicMessageSchema],
-});
+
+
 
 const likesSchema = new Schema({
     sender: String,
@@ -17,10 +11,11 @@ const likesSchema = new Schema({
 });
 
 const messageSchema = new Schema({
-    message:String,
+    cons:String,
+    pros:String,
     createdAt:Date,
+    username:String,
     sender:String,
-    replays: [replaysSchema],
     likes: [likesSchema],
 });
 

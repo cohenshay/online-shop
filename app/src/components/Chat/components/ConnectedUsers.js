@@ -14,12 +14,12 @@ class ConnectedUsers extends Component {
                 <div className="title">חדר</div>
                 {
                     this.props.userList.length > 0 &&
-                    this.props.userList.filter(x => x.roomName == this.props.roomName).map((user, index) =>
-                        <div className="poeple">
+                    this.props.userList.map((user, index) =>
+                        <div className="poeple" key={index}>
                             <div className="poepleImg">
-                                <img src="images/20150731_191335 (3).jpg" />
+                                <img src={window.location.origin+"/images/20150731_191335 (3).jpg"} />
                             </div>
-                            <div className="poepleText">שי כהן</div>
+                            <div className="poepleText">{user.username}</div>
                         </div>
                     )
                 }

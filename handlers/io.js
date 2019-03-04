@@ -36,18 +36,12 @@ let ioHandler = io => {
 
     socket.on("getPrivateMessage", data => {
       console.log("getPrivateMessage",data);
-      socket.broadcast.to(data.toid).emit("sendMsg", {
-        msg: data.msg,
-        name: data.name
-      });
+      socket.broadcast.to(data.toid).emit("sendMsg", data);
     });
 
     socket.on("getRoomMessage", data => {
       console.log("getRoomMessage",data);
-      io.sockets.in(data.roomName).emit("sendRoomMsg", {
-        msg: data.text,
-        name: data.sender
-      });
+      io.sockets.in(data.subject).emit("sendRoomMsg", data);
     });
 
     socket.on("disconnect", () => {

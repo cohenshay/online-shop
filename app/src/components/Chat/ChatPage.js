@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
 import { getRoomMessages, setRoomMessages, getRooms } from '../../actions/roomMessages';
-import  ConnectedUsers  from './components/ConnectedUsers';
-import Moment from 'react-moment';
+import ConnectedUsers from './components/ConnectedUsers';
+const moment = require('moment');
+
 class ChatPage extends Component {
   constructor() {
     super();
@@ -14,79 +15,66 @@ class ChatPage extends Component {
       currentMessage: null,
       messages: [],
       userList: [],
-      roomName: null
+      roomName: null,
+      pros: null,
+      cons: null
     };
   }
-  componentWillReceiveProps(nextProps, prevState) {
-    this.setState({
-      roomMessages: nextProps.roomMessages
-    })
-  }
-  sendPrivateMessage = (user) => {
-    const message = {
-      toid: user.id,
-      msg: "test",
-      name: this.props.currentUser.username
-    }
 
-    this.state.socket.emit('getPrivateMessage', message);
+  componentWillReceiveProps(nextProps, prevState) {
+    if (nextProps.roomMessages != this.props.roomMessages) {
+      this.setState({
+        roomMessages: nextProps.roomMessages,
+      })
+    }
   }
+  // sendPrivateMessage = (user) => {
+  //   const message = {
+  //     toid: user.id,
+  //     msg: "test",
+  //     name: this.props.currentUser.username
+  //   }
+
+  //   this.state.socket.emit('getPrivateMessage', message);
+  // }
 
   sendRoomMessage = (msg) => {
-
+    const createdAt = moment.utc().toString();
     //save
     const message = {
-      text: msg,
-      sender: this.props.currentUser.username,
-      roomName: this.state.roomName
+      cons: this.state.cons,
+      pros: this.state.pros,
+      username: this.props.currentUser.username,
+      subject: this.props.match.params.subject,
+      createdAt,
     }
     this.props.setRoomMessages(message);
     //send  
 
     this.state.socket.emit('getRoomMessage', message);
   }
-  renderMessages = () => {
-    return (
-      <div>
-        {this.state.roomMessages.map((message, index) =>
-          <div key={index} className="message">
-            <div className="message__title">
-              <h4>{message.sender}</h4>
-              <span> <Moment format="h:mm a">{message.createdAt}</Moment></span>
-            </div>
-            <div className="message__body">
-              <p>{message.text}</p>
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
+
   checkResponse = (response) => {
     if (response.status == 401) {
       this.props.history.push("/");
     }
   }
-  enterRoom = (roomName) => {
-    this.state.socket.emit('join', this.props.currentUser, roomName);
-    this.setState({ roomName });
-  }
+
   componentDidMount() {
-
-    // this.props.getRoomMessages(this.state.roomName,this.checkResponse);
-    this.props.getRooms();
-
+    const subject = this.props.match.params.subject;
+    this.props.getRoomMessages({ subject }, this.checkResponse)
+   
     this.state.socket.on("connect", (err) => {
       if (err)
         return console.log(err);
 
-      this.state.socket.emit('join', this.props.currentUser, "general");
+      this.state.socket.emit('join', this.props.currentUser, this.props.match.params.subject);
     });
 
 
-    this.state.socket.on('sendRooms', (rooms) => {
-      console.log("rooms", rooms)
-    });
+    // this.state.socket.on('sendRooms', (rooms) => {
+    //   console.log("rooms", rooms)
+    // });
 
     this.state.socket.on('userList', (userList, socketId) => {
       console.log("userList", userList)
@@ -99,199 +87,78 @@ class ChatPage extends Component {
       this.setState({ userList: userList });
     });
 
-    this.state.socket.on('sendMsg', (message) => {
-      console.log(message)
-      //this.setState((prevState) => ({ messages: [...prevState.messages, message] }));
-    });
+    // this.state.socket.on('sendMsg', (message) => {
+    //   console.log(message)
+    //   //this.setState((prevState) => ({ messages: [...prevState.messages, message] }));
+    // });
 
     this.state.socket.on('sendRoomMsg', (data) => {
       console.log("message: ", data);
-      //this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
+      this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
     });
   }
-
+  handlePros = (e) => {
+    const pros = e.target.value;
+    this.setState({ pros })
+  }
+  handleCons = (e) => {
+    const cons = e.target.value;
+    this.setState({ cons })
+  }
   render() {
+
     return (
 
       <div className="chatPage">
 
-        <ConnectedUsers userList={this.state.userList} roomName={this.state.roomName}/>
+        <ConnectedUsers userList={this.state.userList} />
 
         <div className="mainContent">
           <div className="search">
             <input type="text" name="name" value="" placeholder="חפש חוות דעת" />
           </div>
-          <div className="opinionWrap">
-            <div className="productImg">
-              <img src="images/43057744c.gif" />
-            </div>
-            <div className="productText">
-              <div className="product-description">
-                <h3>Title</h3>
-              </div>
-              <div className="product-price">
-                <h3>199.99$</h3>
-              </div>
-              {false && <div className="replay">
-                <img src="images/like.png" />
-                <span className="likes">140</span>
-                <img src="images/unlike.png" className="unlike" />
-                <span className="unlikes">5</span>
-              </div>}
-            </div>
-          </div>
+         
           <div className="allOpinions">
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
+            {this.state.roomMessages && this.state.roomMessages.length>0 && this.state.roomMessages.map((message, index) =>
+              <div className="opinionWrap" key={index}>
+                <div className="poeple">
+                  <div className="poepleImg">
+                    <img src={window.location.origin + "/images/20150731_191335 (3).jpg"} />
+                  </div>
+                  <div className="poepleText">{message.username}</div>
+                  <div className="replay">
+                    <img src={window.location.origin + "/images/like.png"} />
+                    <img src={window.location.origin + "/images/unlike.png"} className="unlike" />
+                  </div>
                 </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
+                <div className="textOpinionWrap">
+                  <div className="title">יתרונות:</div>
+                  <div className="textOpinion">{message.pros}</div>
                 </div>
+                <div className="textOpinionWrap">
+                  <div className="title">חסרונות:</div>
+                  <div className="textOpinion">{message.cons}</div>
+                </div>
+                <div className="dateOpinion">{message.createdAt}</div>
+              </div>)}
+
+            <div className="write-response">
+              כתוב תגובה
+          <div className="response-wrapper">
+                <div className="response-image"></div>
+                <input type="text" onChange={this.handlePros} placeholder="pros" />
+                <input type="text" onChange={this.handleCons} placeholder="cons" /><button onClick={this.sendRoomMessage}>שלח</button>
               </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
             </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
-            <div className="opinionWrap">
-              <div className="poeple">
-                <div className="poepleImg">
-                  <img src="images/20150731_191335 (3).jpg" />
-                </div>
-                <div className="poepleText">שי כהן</div>
-                <div className="replay">
-                  <img src="images/like.png" />
-                  <img src="images/unlike.png" className="unlike" />
-                </div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">יתרונות:</div>
-                <div className="textOpinion">  יתרונות יתרונות יתרונות יתרונות יתרונות יתרונות</div>
-              </div>
-              <div className="textOpinionWrap">
-                <div className="title">חסרונות:</div>
-                <div className="textOpinion"> חסרונות חסרונות חסרונות חסרונות חסרונות</div>
-              </div>
-              <div className="dateOpinion">18.02.2019</div>
-            </div>
+
+
+
+
           </div>
           <div className="productImg"></div>
           <div className=""></div>
         </div>
+
       </div>
       // <div className="chatPage">
       //   <div className="chat__sidebar">
@@ -341,9 +208,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   getRoomMessages: (roomName, callback) => {
     dispatch(getRoomMessages(roomName, callback));
   },
-  getRooms: () => {
-    dispatch(getRooms());
-  },
+  // getRooms: () => {
+  //   dispatch(getRooms());
+  // },
   setRoomMessages: (roomName, msg) => {
     dispatch(setRoomMessages(roomName, msg));
   },
