@@ -21,7 +21,7 @@ let ioHandler = io => {
           socket.join(roomName);
 
           //Send this event to everyone in the room.
-          io.sockets.in(roomName).emit('sendMsg', "You are in room " + roomName);
+          // io.sockets.in(roomName).emit('sendMsg', "You are in room " + roomName);
 
           io.emit("userList", users, users[len].id);
           io.emit("sendRooms", io.sockets.adapter.rooms);
@@ -36,7 +36,7 @@ let ioHandler = io => {
 
     socket.on("getPrivateMessage", data => {
       console.log("getPrivateMessage",data);
-      socket.broadcast.to(data.toid).emit("sendMsg", data);
+      socket.broadcast.to(data.receiver).emit("sendMsg", data.message);
     });
 
     socket.on("getRoomMessage", data => {

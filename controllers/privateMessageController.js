@@ -29,30 +29,30 @@ let controller = {
             conversationId = currentUserId + receiver;
         else
             conversationId = receiver + currentUserId;
-        //let originalcoversation = await privateMessage.findOne({ conversationId });
+        let originalcoversation = await privateMessage.findOne({ conversationId });
        
         const createdAt = moment.utc();
         const users = [currentUserId, receiver]
         let msg = { message, createdAt, "sender": currentUserId }
 
         //concat
-        // if (originalcoversation) {
+        if (originalcoversation) {
          
             try {
-                updatedMessage = await privateMessage.updateOne({ conversationId }, {$push: {"messages": msg}})
+                updatedMessage = await privateMessage.updateOne({ conversationId }, {$push: {"messages": msg}},{"upsert":true})
                 res.status(200).send(updatedMessage);
             } catch (error) {
                 console.log("Error savePrivateMessage: ", error)
             }
-        //}
+        }
         //create
-        // else {
-        //     let privateMessageObj = new privateMessage({
-        //         conversationId, users, "messages": msg
-        //     })
-        //     const result = await privateMessageObj.save()
-        //     res.status(200).send(result);
-        // }
+        else {
+            let privateMessageObj = new privateMessage({
+                conversationId, users, "messages": msg
+            })
+            const result = await privateMessageObj.save()
+            res.status(200).send(result);
+        }
     },
   
 }

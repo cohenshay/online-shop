@@ -4,6 +4,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case "GET_PRIVATE_MESSAGES":
+      return { ...state, privateMessages: action.data };
     case "GET_ROOM_MESSAGES":
       return { ...state, roomMessages: action.data };
     case "GET_ROOMS":

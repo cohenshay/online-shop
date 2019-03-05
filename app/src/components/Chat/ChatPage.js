@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
 import { getRoomMessages, setRoomMessages, saveLike } from '../../actions/roomMessages';
+import { savePrivateMessage, getConversation } from '../../actions/privateMessages';
 import ConnectedUsers from './components/ConnectedUsers';
+import PrivateChat from "./components/PrivateChat";
 const moment = require('moment');
 
 class ChatPage extends Component {
@@ -11,33 +13,53 @@ class ChatPage extends Component {
     this.state = {
       socket: socketIOClient("http://127.0.0.1:5000"),
       socketId: null,
+      privateMessages: [],
       roomMessages: [],
       currentMessage: null,
-      messages: [],
       userList: [],
-      roomName: null,
       pros: null,
-      cons: null
+      cons: null,
+      privateChatWith: null
     };
   }
 
   componentWillReceiveProps(nextProps, prevState) {
-    if (nextProps.roomMessages != this.props.roomMessages) {
+    if (nextProps.roomMessages != this.props.roomMessages || nextProps.privateMessages != this.props.privateMessages) {
       this.setState({
         roomMessages: nextProps.roomMessages,
+        privateMessages: nextProps.privateMessages,
       })
     }
   }
-  // sendPrivateMessage = (user) => {
-  //   const message = {
-  //     toid: user.id,
-  //     msg: "test",
-  //     name: this.props.currentUser.username
-  //   }
-
-  //   this.state.socket.emit('getPrivateMessage', message);
-  // }
-
+  sendPrivateMessage = (message) => {
+    const data = {
+      "receiver": this.state.privateChatWith,
+      message,
+    }
+    const msg = {
+      message,
+      sender: this.props.currentUser,
+      createdAt: moment.utc().toString(),
+    }
+    this.state.socket.emit('getPrivateMessage', data);
+    this.props.savePrivateMessage(data)
+    this.setState((prevState) => {
+      return {
+        "privateMessages": {
+          "_id": prevState.privateMessages._id,
+           "conversationId": prevState.privateMessages.conversationId,
+          "users": prevState.privateMessages.users,
+          "messages":[...prevState.privateMessages.messages,msg]
+        }
+      }
+    });
+  }
+  getPrivateMessages = () => {
+    const data = {
+      "receiver": this.state.privateChatWith,
+    }
+    this.props.getConversation(data)
+  }
   sendRoomMessage = (msg) => {
     const createdAt = moment.utc().toString();
     //save
@@ -60,43 +82,7 @@ class ChatPage extends Component {
     }
   }
 
-  componentDidMount() {
-    const subject = this.props.match.params.subject;
-    this.props.getRoomMessages({ subject }, this.checkResponse)
 
-    this.state.socket.on("connect", (err) => {
-      if (err)
-        return console.log(err);
-
-      this.state.socket.emit('join', this.props.currentUser, this.props.match.params.subject);
-    });
-
-
-    // this.state.socket.on('sendRooms', (rooms) => {
-    //   console.log("rooms", rooms)
-    // });
-
-    this.state.socket.on('userList', (userList, socketId) => {
-      console.log("userList", userList)
-      this.setState((prevState) => { return { socketId, userList } });
-    });
-
-
-    this.state.socket.on('exit', (userList) => {
-      console.log("exit", userList)
-      this.setState({ userList: userList });
-    });
-
-    // this.state.socket.on('sendMsg', (message) => {
-    //   console.log(message)
-    //   //this.setState((prevState) => ({ messages: [...prevState.messages, message] }));
-    // });
-
-    this.state.socket.on('sendRoomMsg', (data) => {
-      console.log("message: ", data);
-      this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
-    });
-  }
   handlePros = (e) => {
     const pros = e.target.value;
     this.setState({ pros })
@@ -115,12 +101,17 @@ class ChatPage extends Component {
       sender: this.props.currentUser,
       createdAt: moment.utc().toString(),
     }
-    this.setState(prevState => ({
-      roomMessages: {
-        ...(prevState.roomMessages.filter(x => x._id != message._id)),
-        ...(prevState.roomMessages.filter(x => x._id == message._id).likes.push(like))
-      },
-    }));
+    this.setState((previousState, currentProps) => {
+      let otherMessage = previousState.roomMessages.filter(x => x._id != message._id);
+      let messageUpdate = previousState.roomMessages.filter(x => x._id == message._id)[0];
+      messageUpdate.disLikes.push(like);
+      otherMessage.splice(index, 0, messageUpdate);
+
+      return {
+        roomMessages: otherMessage
+      };
+    });
+
     this.props.saveLike(data);
   }
   sendLike = (message, index) => {
@@ -138,7 +129,7 @@ class ChatPage extends Component {
       let messageUpdate = previousState.roomMessages.filter(x => x._id == message._id)[0];
       messageUpdate.likes.push(like);
       otherMessage.splice(index, 0, messageUpdate);
-     
+
       return {
         roomMessages: otherMessage
       };
@@ -146,25 +137,61 @@ class ChatPage extends Component {
 
     this.props.saveLike(data);
   }
+  setPrivateChatWith = (member) => {
+    this.setState({ "privateChatWith": member.userId }, () => this.getPrivateMessages())
+  }
+  componentDidMount() {
+    const subject = this.props.match.params.subject;
+    this.props.getRoomMessages({ subject }, this.checkResponse)
+
+    this.state.socket.on("connect", (err) => {
+      if (err)
+        return console.log(err);
+
+      this.state.socket.emit('join', this.props.currentUser, this.props.match.params.subject);
+    });
+
+    this.state.socket.on('userList', (userList, socketId) => {
+      console.log("userList", userList)
+      this.setState((prevState) => { return { socketId, userList } });
+    });
+
+
+    this.state.socket.on('exit', (userList) => {
+      console.log("exit", userList)
+      this.setState({ userList: userList });
+    });
+
+    this.state.socket.on('sendMsg', (message) => {
+      console.log(message)
+      this.setState((prevState) => ({ privateMessages: [...prevState.privateMessages, message] }));
+    });
+
+    this.state.socket.on('sendRoomMsg', (data) => {
+      console.log("message: ", data);
+      this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
+    });
+  }
   render() {
 
     return (
 
       <div className="chatPage">
 
-        <ConnectedUsers userList={this.state.userList} />
+        <ConnectedUsers userList={this.state.userList} setPrivateChatWith={this.setPrivateChatWith} />
+
 
         <div className="mainContent">
           <div className="search">
             <input type="text" name="name" value="" placeholder="חפש חוות דעת" />
           </div>
 
-          <div className="allOpinions">
+          {this.state.privateChatWith == null && <div className="allOpinions">
             {this.state.roomMessages && this.state.roomMessages.length > 0 && this.state.roomMessages.map((message, index) =>
               <div className="opinionWrap" key={index}>
                 <div className="poeple">
                   <div className="poepleImg">
-                    <img src={window.location.origin + "/images/20150731_191335 (3).jpg"} />
+                    <img src={window.location.origin + `/images/${message.username}.jpg`} />
                   </div>
                   <div className="poepleText">{message.username}</div>
                   <div className="replay">
@@ -185,20 +212,21 @@ class ChatPage extends Component {
 
             <div className="write-response">
               כתוב תגובה
-          <div className="response-wrapper">
+             <div className="response-wrapper">
                 <div className="response-image"></div>
                 <input type="text" onChange={this.handlePros} placeholder="pros" />
                 <input type="text" onChange={this.handleCons} placeholder="cons" /><button onClick={this.sendRoomMessage}>שלח</button>
               </div>
             </div>
-
-
-
-
           </div>
+          }
           <div className="productImg"></div>
           <div className=""></div>
+
+          {this.state.privateChatWith && <PrivateChat messages={(this.state.privateMessages != [] && this.state.privateMessages.messages) || []} sendPrivateMessage={this.sendPrivateMessage} />}
+
         </div>
+
 
       </div>
       // <div className="chatPage">
@@ -246,21 +274,15 @@ class ChatPage extends Component {
   }
 }
 const mapDispatchToProps = (dispatch, props) => ({
-  getRoomMessages: (roomName, callback) => {
-    dispatch(getRoomMessages(roomName, callback));
-  },
-  saveLike: (data) => {
-    dispatch(saveLike(data));
-  },
-  // getRooms: () => {
-  //   dispatch(getRooms());
-  // },
-  setRoomMessages: (roomName, msg) => {
-    dispatch(setRoomMessages(roomName, msg));
-  },
+  getRoomMessages: (roomName, callback) => { dispatch(getRoomMessages(roomName, callback)); },
+  saveLike: (data) => { dispatch(saveLike(data)); },
+  savePrivateMessage: (data) => { dispatch(savePrivateMessage(data)); },
+  getConversation: (data) => { dispatch(getConversation(data)); },
+  setRoomMessages: (roomName, msg) => { dispatch(setRoomMessages(roomName, msg)); },
 });
 const mapStateToProps = (state, props) => ({
-  roomMessages: state.roomMessages.roomMessages,
+  roomMessages: state.roomMessages.roomMessages || [],
+  privateMessages: state.roomMessages.privateMessages || [],
   currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
   rooms: state.roomMessages.rooms,
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
-import DashboardPage from '../components/DashboardPage';
 import NotFoundPage from '../components/NotFoundPage';
 import ChatPage from '../components/Chat/ChatPage';
 import LoginPage from '../components/LoginPage';
@@ -22,7 +21,6 @@ const AppRouter = () => (
             <Route path="/login" component={LoginPage} exact={true} />
             <Route path="/" component={Main} exact={true} />
             <Route path="/addItem" component={addItem} />
-            <Route path="/dashboard" component={DashboardPage} exact={true} />
             <Route path="/chat/:subject" component={ChatPage} />
             <Route path="/ItemDetails" component={ItemDetails} />
             <Route component={NotFoundPage} />
