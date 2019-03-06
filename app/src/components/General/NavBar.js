@@ -6,7 +6,7 @@ class NavBar extends Component {
   constructor() {
     super();
     this.state = {
-      menues: ["Home", "About", "Contact", "Chat"],
+      menues: ["Home", "About", "ContactUs", "Chat"],
       categories: ["Men", "Woman", "Kids"],
       menShoes: ["SNKRS Launch Calendar", "Lifestyle", "Running", "Training & Gym", "Basketball", "Jordan", "Football",
         "Soccer", "Baseball", "Golf", "Skateboarding", "Tennis", "Boots", "All Shoes"],

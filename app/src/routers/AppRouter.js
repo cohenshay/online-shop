@@ -8,7 +8,8 @@ import addItem from '../components/AddItem';
 import Main from '../components/Main/Main';
 import ItemDetails from '../components/Items/ItemDetails';
 import NavBar from "../components/General/NavBar";
-
+import ContactUs from '../components/ContactUs';
+import Payment from '../components/Payment';
 export const history = createHistory();
 
 const AppRouter = () => (
@@ -21,6 +22,8 @@ const AppRouter = () => (
             <Route path="/login" component={LoginPage} exact={true} />
             <Route path="/" component={Main} exact={true} />
             <Route path="/addItem" component={addItem} />
+            <Route path="/ContactUs" component={ContactUs} />
+            <Route path="/payment" component={Payment} />
             <Route path="/chat/:subject" component={ChatPage} />
             <Route path="/ItemDetails" component={ItemDetails} />
             <Route component={NotFoundPage} />

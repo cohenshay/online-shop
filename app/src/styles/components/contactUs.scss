@@ -1,0 +1,63 @@
+.contact-us{
+    margin: auto;
+    width: 40%;
+
+    .email-text {
+        color: grey;
+    }
+input.email-input {
+    margin: 5px 0;
+    width: 80%;
+    height: 50px;
+    border: 1px solid #30aabc;
+    font-size: 15px;
+    padding: 0 5px;
+    color: grey;
+}
+.subject-text {
+    margin-top: 15px;
+    color: grey;
+}
+select.subject-input {
+    width: 80%;
+    margin: 5px 0;
+    height: 50px;
+    border: 1px solid #30aabc;
+    font-size: 15px;
+    padding: 0 5px;
+    color: grey;
+}
+option{
+    font-size: 15px;
+    padding: 0 5px;
+    color: grey;
+}
+.message-text {
+    margin-top: 15px;
+    color: grey;
+}
+.message-input {
+    width: 80%;
+    margin: 5px 0;
+    height: 150px;
+    border: 1px solid #30aabc;
+    font-size: 15px;
+    padding: 0 5px;
+    color: grey;
+}
+
+button {
+    background: #30aabc;
+    border: none;
+    height: 50px;
+    margin-top: 15px;
+    width: 80%;
+    font-size: 17px;
+    color: white;
+    font-weight: 700;
+}
+h3 {
+    font-size: 77px;
+}
+
+}
