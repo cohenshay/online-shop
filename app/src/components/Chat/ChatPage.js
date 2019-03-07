@@ -47,9 +47,9 @@ class ChatPage extends Component {
       return {
         "privateMessages": {
           "_id": prevState.privateMessages._id,
-           "conversationId": prevState.privateMessages.conversationId,
+          "conversationId": prevState.privateMessages.conversationId,
           "users": prevState.privateMessages.users,
-          "messages":[...prevState.privateMessages.messages,msg]
+          "messages": [...prevState.privateMessages.messages, msg]
         }
       }
     });
@@ -182,48 +182,57 @@ class ChatPage extends Component {
 
 
         <div className="mainContent">
-          <div className="search">
-            <input type="text" name="name" value="" placeholder="חפש חוות דעת" />
-          </div>
 
-          {this.state.privateChatWith == null && <div className="allOpinions">
-            {this.state.roomMessages && this.state.roomMessages.length > 0 && this.state.roomMessages.map((message, index) =>
-              <div className="opinionWrap" key={index}>
-                <div className="poeple">
-                  <div className="poepleImg">
-                    <img src={window.location.origin + `/images/${message.username}.jpg`} />
-                  </div>
-                  <div className="poepleText">{message.username}</div>
-                  <div className="replay">
-                    <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} />{message.likes && message.likes.length}
-                    <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} />{message.disLikes && message.disLikes.length}
-                  </div>
-                </div>
-                <div className="textOpinionWrap">
-                  <div className="title">יתרונות:</div>
-                  <div className="textOpinion">{message.pros}</div>
-                </div>
-                <div className="textOpinionWrap">
-                  <div className="title">חסרונות:</div>
-                  <div className="textOpinion">{message.cons}</div>
-                </div>
-                <div className="dateOpinion">{message.createdAt}</div>
-              </div>)}
 
-            <div className="write-response">
-              כתוב תגובה
+          {this.state.privateChatWith == null &&
+            <div>            <div className="search">
+              <input type="text" name="name" placeholder="חפש חוות דעת" />
+            </div>
+              <div className="allOpinions">
+                {this.state.roomMessages && this.state.roomMessages.length > 0 && this.state.roomMessages.map((message, index) =>
+                  <div className="opinionWrap" key={index}>
+                    <div className="poeple">
+                      <div className="poepleImg">
+                        <img src={window.location.origin + `/images/${message.username}.jpg`} />
+                      </div>
+                      <div className="poepleText">{message.username}</div>
+                      <div className="replay">
+                        <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} />{message.likes && message.likes.length}
+                        <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} />{message.disLikes && message.disLikes.length}
+                      </div>
+                    </div>
+                    <div className="textOpinionWrap">
+                      <div className="title">יתרונות:</div>
+                      <div className="textOpinion">{message.pros}</div>
+                    </div>
+                    <div className="textOpinionWrap">
+                      <div className="title">חסרונות:</div>
+                      <div className="textOpinion">{message.cons}</div>
+                    </div>
+                    <div className="dateOpinion">{message.createdAt}</div>
+                  </div>)}
+
+                <div className="write-response">
+                  כתוב תגובה
              <div className="response-wrapper">
-                <div className="response-image"></div>
-                <input type="text" onChange={this.handlePros} placeholder="pros" />
-                <input type="text" onChange={this.handleCons} placeholder="cons" /><button onClick={this.sendRoomMessage}>שלח</button>
+                    <div className="response-image"></div>
+                    <input type="text" onChange={this.handlePros} placeholder="pros" />
+                    <input type="text" onChange={this.handleCons} placeholder="cons" /><button onClick={this.sendRoomMessage}>שלח</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+
           }
           <div className="productImg"></div>
           <div className=""></div>
 
-          {this.state.privateChatWith && <PrivateChat messages={(this.state.privateMessages != [] && this.state.privateMessages.messages) || []} sendPrivateMessage={this.sendPrivateMessage} />}
+          {this.state.privateChatWith &&
+            <PrivateChat messages={(this.state.privateMessages != [] && this.state.privateMessages.messages) || []}
+              sendPrivateMessage={this.sendPrivateMessage}
+              currentUser={this.props.currentUser} 
+              otherUser={this.state.privateChatWith}/>
+          }
 
         </div>
 
@@ -283,7 +292,7 @@ const mapDispatchToProps = (dispatch, props) => ({
 const mapStateToProps = (state, props) => ({
   roomMessages: state.roomMessages.roomMessages || [],
   privateMessages: state.roomMessages.privateMessages || [],
-  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
+  C: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
   rooms: state.roomMessages.rooms,
 });
 

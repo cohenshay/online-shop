@@ -10,14 +10,14 @@ let controller = {
     },
     generateToken: async (req, res) => {
         gateway.clientToken.generate({}, function (err, response) {
-            res.send(response.clientToken);
+            res.send(response);
         });
     },
     checkout:async (req, res) => {
         var saleRequest = {
             amount: 10.00, 
             merchantAccountId: "USD",
-            paymentMethodNonce: req.body.nonce,
+            paymentMethodNonce:"fake-valid-nonce",// req.body.nonce,
             orderId: "Mapped to PayPal Invoice Number",
             descriptor: {
               name: "Descriptor displayed in customer CC statements. 22 char max"

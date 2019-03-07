@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Payments from '../Payment';
 
 class ItemDetails extends Component {
     constructor() {
@@ -48,6 +49,7 @@ class ItemDetails extends Component {
                         <div className="description">
                             {this.state.item.description}
                         </div>
+                        <Payments/>
                         <Link to={`/chat/${this.state.item.name}`} params={{subject:this.state.item.name}}>Chat</Link>
                     </div>
                     <div className="item-images">

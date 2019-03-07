@@ -4,25 +4,31 @@ class PrivateChat extends Component {
     constructor() {
         super();
         this.state = {
-            message:null
+            message: null
         };
     }
-    handleMessage = (e)=>{
-        this.setState({"message":e.target.value})
+    handleMessage = (e) => {
+        this.setState({ "message": e.target.value })
+    }
+
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.props.sendPrivateMessage(this.state.message)
+        }
     }
     render() {
         return (
 
             <div className="privateMessages">
-              {
-                this.props.messages.length>0 && this.props.messages.map((message,index)=>
-                <div>
-                        {message.message}
-                        {message.createdAt}
-                        {message.sender}
-                </div>)
-              }
-                <input type="text" onChange={this.handleMessage} placeholder="message" /><button onClick={()=>this.props.sendPrivateMessage(this.state.message)}>שלח</button>
+                {
+                    this.props.messages && this.props.messages.length > 0 && this.props.messages.map((message, index) =>
+                        <div className={`private-message-wrapper ${message.sender==this.props.currentUser ? "current-user":"other-user"}`}>
+                            <div className="message-text">{message}</div>
+                            <div className="message-date">{createdAt}</div>
+                        </div>
+                    )
+                }
+
             </div>
 
         );

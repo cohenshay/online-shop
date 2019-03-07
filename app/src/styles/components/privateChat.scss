@@ -1,0 +1,44 @@
+.privateMessages {
+    overflow: hidden;
+    background: #e5ddd5;
+    .private-message-wrapper {
+        border-radius: 7.5px;
+        box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+        font-size: 14.2px;
+        line-height: 19px;
+        color: #262626;
+        position: relative;
+        margin-bottom: 0;
+        border-top-left-radius: 0px;
+        padding: 7px 30px;
+        clear: both;
+    }
+    .current-user {
+        background: #dcf8c6;
+        float: left;
+    }
+    .other-user {
+        background: #ffffff;
+        float: right;
+    }
+    .write-message {
+        position: fixed;
+        bottom: 0;
+        height: 51px;
+        background: #efefef;
+        width: 100%;
+    }
+    .write-message-btn {
+        width: 70%;
+        background-color: #ffffff;
+        border-color: #fff;
+        border-radius: 21px;
+        border-style: solid;
+        border-width: 1px;
+        padding: 9px 12px 11px 12px;
+        margin: 5px 10px;
+    }
+    .message-date {
+        font-size: 10px;
+    }
+}
