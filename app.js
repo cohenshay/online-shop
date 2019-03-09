@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-var storage = multer.diskStorage({
+var storageForItems = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, path.resolve(__dirname, `app/public/images/items/`));
   },
@@ -57,8 +57,18 @@ var storage = multer.diskStorage({
     });
   }
 });
-app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/images/items/'),storage:storage}).any());
-
+var storageForUsers = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, path.resolve(__dirname, `app/public/images/users/`));
+  },
+  filename: function(req, file, callback) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) + '.' + mime.getExtension(file.mimetype));
+    });
+  }
+});
+app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/images/items/'),storage:storageForItems}).any());
+app.use('/auth/updateUser',multer({dest: path.join(__dirname, 'app/public/images/user/'),storage:storageForUsers}).any());
 //private routes (needs auth)
 app.use('/api/user', jwtAuthenticator,userRouter);
 app.use('/api/privateMessages', jwtAuthenticator,privateMessageRouter);

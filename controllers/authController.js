@@ -2,11 +2,24 @@ const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const config = require('../config/config.json');
+const multer = require("multer");
 
 mongoose.connect(
     config.mongoDB_URL,
     { useNewUrlParser: true }
 );
+mongoose.set('useFindAndModify', false);
+
+var upload = multer({ storage: storage }).any();
+
+var storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, path.resolve(__dirname, `../app/public/images/items/`));
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.originalname);
+    }
+});
 
 require('../models/user');
 const User = mongoose.model("users");
@@ -20,7 +33,7 @@ let controller = {
                 });
             }
             else {
-                const { fname, lname, address, email, username } = req.body;
+                const { fname, lname, address, email, username, image } = req.body;
                 const user = new User({
                     _id: new mongoose.Types.ObjectId(),
                     fname,
@@ -28,9 +41,10 @@ let controller = {
                     address,
                     email,
                     username,
+                    image,
                     password: hash
                 });
-                user.save().then(function (result) {             
+                user.save().then(function (result) {
                     res.status(200).json({
                         success: 'New user has been created'
                     });
@@ -43,7 +57,7 @@ let controller = {
         });
     },
     signin: (req, res) => {
-        
+
 
         User.findOne({ email: req.body.email })
             .exec()
@@ -56,7 +70,7 @@ let controller = {
                     }
                     if (result) {
                         const JWTToken = jwt.sign({ _id: user._id }, config.secret, { expiresIn: '2h' });
-                        res.cookie('jwt',JWTToken);
+                        res.cookie('jwt', JWTToken);
                         return res.status(200).json({
                             success: 'success',
                             token: JWTToken,
@@ -69,11 +83,55 @@ let controller = {
                 });
             })
             .catch(error => {
-                console.log("signin error: "+error);
+                console.log("signin error: " + error);
                 res.status(500).json({
                     error
                 });
             });;
+    },
+    updateUser: async (req, res) => {
+
+
+        const { fname, lname, address, email, username, password, prevEmail } = req.body;
+        let user = {};
+        if (req.files[0]) {
+            const imagePath = "/images/users/" + req.files[0].originalname;
+            user = {
+                fname, lname, address, email, username, "password": hash, image: imagePath
+            }
+            upload(req, res, function (err) {
+                if (err) {
+                    console.log("Error uploading file");
+                    return res.end("Error uploading file.");
+                }
+            });
+        }
+        if (password) {
+            bcrypt.hash(password, 10, async function (err, hash) {
+                if (user == {}) { //case user did not update image
+                    user = {
+                        fname, lname, address, email, username, "password": hash
+                    }
+                }
+                const newUser = await User.findOneAndUpdate({ email: prevEmail }, { $set: { ...user } }, { new: true, useFindAndModify: false });
+                res.status(200).json({
+                    "success": 'success',
+                    "user": newUser
+                });
+
+            });
+        }
+        else{
+            user = {
+                fname, lname, address, email, username
+            }
+            const newUser = await User.findOneAndUpdate({ email: prevEmail }, { $set: { ...user } }, { new: true, useFindAndModify: false });
+            res.status(200).json({
+                "success": 'success',
+                "user": newUser
+            });
+
+        }
     }
 }
 

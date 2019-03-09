@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Payments from '../Payment';
+import { addItemToCart } from '../../actions/shop';
 
 class ItemDetails extends Component {
     constructor() {
@@ -14,6 +15,9 @@ class ItemDetails extends Component {
     }
     componentDidMount() {
         this.setState({ item: this.props.history.location.state })
+    }
+    addItem = () => {
+        this.props.addItemToCart(this.state.item)
     }
     render() {
         if (this.state.item) {
@@ -36,7 +40,7 @@ class ItemDetails extends Component {
                         <div className="item_sizes">
                             Select Size
                             {this.state.sizes.map((size, index) => (
-                                <div className="size-box_container">
+                                <div className="size-box_container" key={index}>
                                     <div className="item_size">
                                         {size}
                                     </div>
@@ -44,13 +48,13 @@ class ItemDetails extends Component {
                             ))}
                         </div>
                         <div className="add_to_card">
-                            <button className="add-button">Add to Cart</button>
+                            <button className="add-button" onClick={this.addItem}>Add to Cart</button>
                         </div>
                         <div className="description">
                             {this.state.item.description}
                         </div>
-                        <Payments/>
-                        <Link to={`/chat/${this.state.item.name}`} params={{subject:this.state.item.name}}>Chat</Link>
+
+                        <Link to={`/chat/${this.state.item.name}`} params={{ subject: this.state.item.name }}>Chat</Link>
                     </div>
                     <div className="item-images">
                         <div className="images-row">
@@ -66,8 +70,12 @@ class ItemDetails extends Component {
         else return null;
     }
 }
-const mapDispatchToProps = (dispatch, props) => ({});
-const mapStateToProps = (state, props) => ({});
+const mapDispatchToProps = (dispatch, props) => ({
+    addItemToCart: (item) => { dispatch(addItemToCart(item)) }
+});
+const mapStateToProps = (state, props) => ({
+    itemsToPay:state.shop.itemsToPay
+});
 
 export default connect(
     mapStateToProps,

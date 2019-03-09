@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {logout} from '../../actions/auth';
+import { logout } from '../../actions/auth';
 class NavBar extends Component {
   constructor() {
     super();
@@ -17,8 +17,8 @@ class NavBar extends Component {
     };
   }
   toggleMenu = (menuName, status) => {
-      var element = document.querySelector(".nav-expand");
-      element.style.display = status == "open" ? "block" : "none";
+    var element = document.querySelector(".nav-expand");
+    element.style.display = status == "open" ? "block" : "none";
   };
   render() {
     return (
@@ -29,10 +29,13 @@ class NavBar extends Component {
               <Link to="/login">Login</Link>
             </li>
             <li className="nav-status-right_item">
-              <div onClick={()=>this.props.logout()}>Logout</div>
+              <div onClick={() => this.props.logout()}>Logout</div>
             </li>
             <li className="nav-status-right_item">
-              <img className="cart-img" src={window.location.origin+ "/images/cart.png"} />
+              <Link to="/cart"> <img className="cart-img" src={window.location.origin + "/images/cart.png"} /></Link>
+            </li>
+            <li className="nav-status-right_item">
+              <Link to="/userDetails"> {this.props.currentUser && <img className="cart-img" src={window.location.origin + this.props.currentUser.image} />}</Link>
             </li>
           </ul>
           <ul className="nav-status-left_item-wrapper">
@@ -107,7 +110,10 @@ class NavBar extends Component {
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout())
 });
-const mapStateToProps = (state, props) => ({});
+const mapStateToProps = (state, props) => ({
+  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser"))
+
+});
 
 export default connect(
   mapStateToProps,

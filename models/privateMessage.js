@@ -10,7 +10,7 @@ const messageSchema = new Schema({
 
 const privateMessageSchema = new Schema({
   conversationId: String,
-  users:Array,
+  users:[{ type: Schema.Types.ObjectId, ref: 'users' }],
   messages:[messageSchema],
 });
 

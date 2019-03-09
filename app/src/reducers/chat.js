@@ -6,6 +6,9 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case "GET_PRIVATE_MESSAGES":
       return { ...state, privateMessages: action.data };
+    case "SET_PRIVATE_MESSAGE":
+      let prevMessages = {...state.privateMessages,messages:[...state.privateMessages.messages,action.data]}
+      return { ...state, privateMessages: prevMessages };
     case "GET_ROOM_MESSAGES":
       return { ...state, roomMessages: action.data };
     case "GET_ROOMS":

@@ -17,7 +17,7 @@ class ConnectedUsers extends Component {
                     this.props.userList.map((user, index) =>
                         <div className="poeple" key={index}>
                             <div className="poepleImg" onClick={()=>this.props.setPrivateChatWith(user)}>
-                                <img src={window.location.origin+`/images/${user.username}.jpg`} />
+                                <img src={window.location.origin+`/images/users/${user.username}.jpg`} />
                             </div>
                             <div className="poepleText">{user.username}</div>
                         </div>

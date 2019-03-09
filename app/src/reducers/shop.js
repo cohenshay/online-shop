@@ -1,9 +1,12 @@
 const initialState = {
-  roomMessages: []
+  roomMessages: [],
+  itemsToPay:[]
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case "ADD_ITEM_TO_CART":
+    return { ...state, itemsToPay:[...state.itemsToPay,action.data]  };
     case "GET_ALL_ITEMS":
       return { ...state, items: action.data };
     case "FILTER_BY_CATEGORY":

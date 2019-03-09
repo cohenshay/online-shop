@@ -1,10 +1,7 @@
 .item-wrapper.hovered{
   border: 1px solid;
 }
-.price{
-  border-top:1px solid #cdcdcd; 
-  padding-top: 5px;
-}
+
 .item-wrapper {
   padding: 10px;
   width: 200px;
@@ -16,6 +13,10 @@
     background: #f5f5f5;
    
   } 
+  .price{
+    border-top:1px solid #cdcdcd; 
+    padding-top: 5px;
+  }
   .image-slider-wrapper{
     display:none;
     .img-in-slider{

@@ -10,6 +10,10 @@ import ItemDetails from '../components/Items/ItemDetails';
 import NavBar from "../components/General/NavBar";
 import ContactUs from '../components/ContactUs';
 import Payment from '../components/Payment';
+import Cart from '../components/Cart';
+import UserDetails from '../components/UserDetails/UserDetails';
+import PrivateChat from '../components/Chat/PrivateChat';
+
 export const history = createHistory();
 
 const AppRouter = () => (
@@ -19,13 +23,17 @@ const AppRouter = () => (
       <NavBar />
       <div className="content-area">
           <Switch>
+          <Route path="/userDetails" component={UserDetails} exact={true} />
             <Route path="/login" component={LoginPage} exact={true} />
             <Route path="/" component={Main} exact={true} />
             <Route path="/addItem" component={addItem} />
             <Route path="/ContactUs" component={ContactUs} />
             <Route path="/payment" component={Payment} />
             <Route path="/chat/:subject" component={ChatPage} />
+            <Route path="/privateChat/:otheUser" component={PrivateChat} />
+            {/* <Route path="/chat/" component={ChatPage}  exact={true}/> */}
             <Route path="/ItemDetails" component={ItemDetails} />
+            <Route path="/cart" component={Cart} />
             <Route component={NotFoundPage} />
           </Switch>
       </div>

@@ -15,6 +15,14 @@ export const addItem = (formData) => {
             .then((response) => console.log(response)).catch((err) => console.log(err))
     }
 }
+export const addItemToCart = (item) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: "ADD_ITEM_TO_CART",
+            data: item
+        })
+    }
+}
 export const getAllItems = (formData) => {
     return (dispatch, getState) => {
 

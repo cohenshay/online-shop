@@ -11,7 +11,7 @@ export const getConversation = (params) => {
 
         axios.get(`http://localhost:5000/api/privateMessages/getConversation?receiver=${params.receiver}`, config)
             .then((response) => {
-            
+
                 return dispatch({
                     type: "GET_PRIVATE_MESSAGES",
                     data: response.data
@@ -33,6 +33,9 @@ export const savePrivateMessage = (data) => {
 
 
         axios.post(`http://localhost:5000/api/privateMessages/savePrivateMessage`, data, config)
-            .then((response) =>console.log("savePrivateMessage success",response) ).catch((err) => console.log(err))
+            .then((response) => {
+                console.log("savePrivateMessage success", response);
+                dispatch({ type: "SET_PRIVATE_MESSAGE", data })
+            }).catch((err) => console.log(err))
     }
 }
