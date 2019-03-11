@@ -13,6 +13,7 @@ import Payment from '../components/Payment';
 import Cart from '../components/Cart';
 import UserDetails from '../components/UserDetails/UserDetails';
 import PrivateChat from '../components/Chat/PrivateChat';
+import About from '../components/About';
 
 export const history = createHistory();
 
@@ -27,6 +28,7 @@ const AppRouter = () => (
             <Route path="/login" component={LoginPage} exact={true} />
             <Route path="/" component={Main} exact={true} />
             <Route path="/addItem" component={addItem} />
+            <Route path="/about" component={About} />
             <Route path="/ContactUs" component={ContactUs} />
             <Route path="/payment" component={Payment} />
             <Route path="/chat/:subject" component={ChatPage} />
