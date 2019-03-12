@@ -6,7 +6,7 @@ class NavBar extends Component {
   constructor() {
     super();
     this.state = {
-      menues: ["Home", "About", "ContactUs", "Chat"],
+      menues: ["Home", "About", "ContactUs"],
       categories: ["Men", "Woman", "Kids"],
       menShoes: ["SNKRS Launch Calendar", "Lifestyle", "Running", "Training & Gym", "Basketball", "Jordan", "Football",
         "Soccer", "Baseball", "Golf", "Skateboarding", "Tennis", "Boots", "All Shoes"],
@@ -25,14 +25,14 @@ class NavBar extends Component {
       <div className="nav-wrapper">
         <div className="nav-status-bar">
           <ul className="nav-status-right_item-wrapper">
-            <li className="nav-status-right_item">
+            {localStorage.getItem('clientToken')==null && <li className="nav-status-right_item">
               <Link to="/login">Login</Link>
-            </li>
-            <li className="nav-status-right_item">
+            </li>}
+           {localStorage.getItem('clientToken') &&  <li className="nav-status-right_item pointer">
               <div onClick={() => this.props.logout()}>Logout</div>
-            </li>
+            </li>}
             <li className="nav-status-right_item">
-              <Link to="/cart"> <img className="cart-img" src={window.location.origin + "/images/cart.png"} /></Link>
+              <Link to="/cart"> <img className="cart-img" src={`${window.location.origin}${this.props.itemsToPay.length>0 ?"/images/full-cart.png": "/images/cart.png"}`} /></Link>
             </li>
             <li className="nav-status-right_item">
               <Link to="/userDetails"> {this.props.currentUser && <img className="cart-img" src={window.location.origin + this.props.currentUser.image} />}</Link>
@@ -51,12 +51,9 @@ class NavBar extends Component {
           </ul>
         </div>
         <div className="nav-categories-wrapper">
-          <div className="search-box">
-            <img src="hhh" />
-            <input type="text" placeholder="Search" />
-          </div>
+         
           <div className="logo">
-            <img src="hhh" />
+            <img src={`${window.location.origin}/images/nike-logo.png`} className="nike-logo"/>
           </div>
           <ul>
             {this.state.categories.map((item, index) => (
@@ -111,7 +108,8 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout())
 });
 const mapStateToProps = (state, props) => ({
-  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser"))
+  currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
+  itemsToPay:state.shop.itemsToPay
 
 });
 

@@ -17,7 +17,8 @@ class ChatPage extends Component {
       userList: [],
       pros: null,
       cons: null,
-      privateChatWith: null
+      privateChatWith: null,
+      filter: ""
     };
   }
 
@@ -29,6 +30,27 @@ class ChatPage extends Component {
     }
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.filter) {
+      let wordsToHighLight = [];
+      let consAndPros = [...document.getElementsByClassName("textOpinion")];
+      consAndPros.forEach(element => {
+        wordsToHighLight.push(element);
+      });
+
+      let userNames = [...document.getElementsByClassName("poepleText")];
+      userNames.forEach(element => {
+        wordsToHighLight.push(element);
+      });
+
+      wordsToHighLight.forEach(element => {
+        this.highLightFilteredWords(element, this.state.filter, "mark-word");
+      });
+    }
+    else if (prevState.filter) {
+      this.setState({ roomMessages: this.props.roomMessages });
+    }
+  }
 
   sendRoomMessage = (msg) => {
     const createdAt = moment.utc().toString();
@@ -52,15 +74,16 @@ class ChatPage extends Component {
     }
   }
 
-
   handlePros = (e) => {
     const pros = e.target.value;
     this.setState({ pros })
   }
+
   handleCons = (e) => {
     const cons = e.target.value;
     this.setState({ cons })
   }
+
   sendDisLike = (message, index) => {
     let data = {
       messageId: message._id,
@@ -84,6 +107,7 @@ class ChatPage extends Component {
 
     this.props.saveLike(data);
   }
+
   sendLike = (message, index) => {
     let data = {
       messageId: message._id,
@@ -107,9 +131,11 @@ class ChatPage extends Component {
 
     this.props.saveLike(data);
   }
+
   setPrivateChatWith = (member) => {
     this.props.history.push(`/privateChat/${member.userId}`);
   }
+
   componentDidMount() {
     const subject = this.props.match.params.subject;
     this.props.getRoomMessages({ subject }, this.checkResponse)
@@ -132,13 +158,41 @@ class ChatPage extends Component {
       this.setState({ userList: userList });
     });
 
-   
+
 
     this.state.socket.on('sendRoomMsg', (data) => {
       console.log("message: ", data);
       this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
     });
   }
+
+  applyFilter = (e) => {
+    const filter = e.target.value;
+    if (filter) {
+      let filterResults = this.state.roomMessages.filter(x => x.cons.includes(filter) || x.pros.includes(filter));
+      return this.setState({ roomMessages: filterResults, filter });
+    }
+    this.setState({ filter, roomMessages: this.props.roomMessages });
+  }
+
+  highLightFilteredWords = (container, what, spanClass) => {
+    var content = container.innerHTML;
+    var words = content.split('');
+    var i = words.length;
+    var word = '';
+
+    while (--i) {
+      word = words[i];
+      if (word.toLowerCase() == what.toLowerCase()) {
+        words[i] = `<span class="${spanClass}">` + word + "</span>";
+      }
+      else {
+        words[i] = word;
+      }
+    }
+    container.innerHTML = words.join('');
+  }
+
   render() {
 
     return (
@@ -153,7 +207,7 @@ class ChatPage extends Component {
 
           {this.state.privateChatWith == null &&
             <div>            <div className="search">
-              <input type="text" name="name" placeholder="חפש חוות דעת" />
+              <input type="text" name="name" placeholder="חפש חוות דעת" value={this.state.filter} onChange={this.applyFilter} />
             </div>
               <div className="allOpinions">
                 {this.state.roomMessages && this.state.roomMessages.length > 0 && this.state.roomMessages.map((message, index) =>
@@ -164,8 +218,8 @@ class ChatPage extends Component {
                       </div>
                       <div className="poepleText">{message.username}</div>
                       <div className="replay">
-                        <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} />{message.likes && message.likes.length}
-                        <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} />{message.disLikes && message.disLikes.length}
+                        <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} /><span className="likes-number">{message.likes && message.likes.length}</span>
+                        <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} /><span  className="disLikes-number">{message.disLikes && message.disLikes.length}</span>
                       </div>
                     </div>
                     <div className="textOpinionWrap">
@@ -194,7 +248,7 @@ class ChatPage extends Component {
           <div className="productImg"></div>
           <div className=""></div>
 
-     
+
 
         </div>
 
