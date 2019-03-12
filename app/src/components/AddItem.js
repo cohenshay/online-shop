@@ -9,10 +9,10 @@ class AddItem extends Component {
     super();
     this.state = {
       audiences: ["Men", "Woman", "Kids"],
-      category: "",
-      audience: "",
+      category: "Shoes",
+      audience: "Men",
       name: "",
-      sport: "",
+      sport: "Lifestyle",
       price: "",
       main_img: "",
       img1: "",
@@ -113,7 +113,7 @@ class AddItem extends Component {
           <form onSubmit={this.onFormSubmit}>
             <div className="field">
               <label>Audience</label>
-              <select className="audience" onChange={this.handleInputChange} name="audience">
+              <select className="audience" onChange={this.handleInputChange} name="audience" value={this.state.audience}>
                 {audienceOptions.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -124,7 +124,7 @@ class AddItem extends Component {
             <div className="field">
               <label>Category</label>
 
-              <select className="category" onChange={this.handleInputChange} name="category">
+              <select className="category" onChange={this.handleInputChange} name="category" value={this.state.category}>
                 {categoryOptions.map((item, index) => (
                   <option key={index} value={item.name}>
                     {item.name}
@@ -134,7 +134,7 @@ class AddItem extends Component {
             </div>
             <div className="field">
               <label>Type</label>
-              <select className="type" onChange={this.handleInputChange} name="type">
+              <select className="type" onChange={this.handleInputChange} name="type" value={this.state.type}>
                 {typeOptions.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -144,7 +144,7 @@ class AddItem extends Component {
             </div>
             <div className="field">
               <label>Sport</label>
-              <select className="sport" onChange={this.handleInputChange} name="sport">
+              <select className="sport" onChange={this.handleInputChange} name="sport" value={this.state.sport}>
                 {sportOptions.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -154,24 +154,24 @@ class AddItem extends Component {
             </div>
             <div className="field">
               <label>Item name</label>
-              <input type="text" className="item__name" onChange={this.handleInputChange} name="name" placeholder="name" />
+              <input type="text" className="item__name" onChange={this.handleInputChange} name="name" placeholder="name" value={this.state.name}/>
             </div>
             <div className="field">
               <label>Brand</label>
-              <input type="text" className="item__brand" onChange={this.handleInputChange} name="brand" placeholder="brand" />
+              <input type="text" className="item__brand" onChange={this.handleInputChange} name="brand" placeholder="brand" value={this.state.brand}/>
             </div>
             <div className="field">
               <label>Price</label>
-              <input type="number" className="item__price" onChange={this.handleInputChange} name="price" placeholder="price" />
+              <input type="number" className="item__price" onChange={this.handleInputChange} name="price" placeholder="price" value={this.state.price}/>
             </div>
             <div className="field">
 
               <label>Amount</label>
-              <input type="number" className="item__amount" onChange={this.handleInputChange} name="amount" placeholder="amount" />
+              <input type="number" className="item__amount" onChange={this.handleInputChange} name="amount" placeholder="amount" value={this.state.amount}/>
             </div>
             <div className="field">
               <label>Color</label>
-              <select className="color" onChange={this.handleInputChange} name="color">
+              <select className="color" onChange={this.handleInputChange} name="color" value={this.state.color}>
                 {colorOptions.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -181,7 +181,7 @@ class AddItem extends Component {
             </div>
             <div className="field">
               <label>Size</label>
-              <select className="item__size" onChange={this.handleInputChange} name="size">
+              <select className="item__size" onChange={this.handleInputChange} name="size" value={this.state.size}>
                 {sizeOptions.map((item, index) => (
                   <option key={index} value={item}>
                     {item}
@@ -191,7 +191,7 @@ class AddItem extends Component {
             </div>
             <div className="field">
               <label>Decription</label>
-              <textarea className="item__description" onChange={this.handleInputChange} name="description" />
+              <textarea className="item__description" onChange={this.handleInputChange} name="description" value={this.state.description}/>
             </div>
             <div className="field">
               <label>Main Image</label>
