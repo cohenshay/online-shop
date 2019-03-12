@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { logout } from '../../actions/auth';
+import { filterTypes, getAllCategories, getTypesByCategory, filterByCategory } from '../../actions/shop';
 class NavBar extends Component {
   constructor() {
     super();
@@ -16,10 +17,16 @@ class NavBar extends Component {
 
     };
   }
+
   toggleMenu = (menuName, status) => {
     var element = document.querySelector(".nav-expand");
     element.style.display = status == "open" ? "block" : "none";
   };
+
+  handleTypeClick = (items) => {
+    this.props.filterByCategory(items);
+  }
+
   render() {
     return (
       <div className="nav-wrapper">
@@ -27,7 +34,7 @@ class NavBar extends Component {
           <ul className="nav-status-right_item-wrapper">
             {this.props.currentUser && this.props.currentUser.isAdmin &&
               <li className="nav-status-right_item pointer">
-                <Link className="menu-link" to="/addItem" >Manage</Link>
+                <div className="menu-link" to="/addItem" >Manage</div>
               </li>}
             {localStorage.getItem('clientToken') == null && <li className="nav-status-right_item">
               <Link to="/login">Login</Link>
@@ -61,21 +68,19 @@ class NavBar extends Component {
           </div>
           <ul>
             {this.state.categories.map((item, index) => (
-              <li className="nav-categories_item" onMouseEnter={() => this.toggleMenu(item, "open")} onMouseLeave={() => this.toggleMenu(item, "close")} key={index} >
+              <li className="nav-categories_item" onMouseEnter={() => this.toggleMenu(item, "open")} key={index} >
                 <Link to={`/${item}`}>{item}</Link>
               </li>
             ))}
           </ul>
         </div>
-        <div className="nav-expand">
+        <div className="nav-expand" onMouseLeave={() => this.toggleMenu(null, "close")}>
           <div className="nav-expand-categories-wrapper">
             <div className="nav-expand-category">
               <div className="nav-expand-category_title">SHOES</div>
               <ul>
                 {this.state.menShoes.map((item, index) => (
-                  <li key={index} className="nav-expand_item">
-                    {item}
-                  </li>
+                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -83,9 +88,7 @@ class NavBar extends Component {
               <div className="nav-expand-category_title">CLOTHING</div>
               <ul>
                 {this.state.menClothing.map((item, index) => (
-                  <li key={index} className="nav-expand_item">
-                    {item}
-                  </li>
+                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -96,9 +99,7 @@ class NavBar extends Component {
 
               <ul>
                 {this.state.menAccessories.map((item, index) => (
-                  <li key={index} className="nav-expand_item">
-                    {item}
-                  </li>
+                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -109,7 +110,8 @@ class NavBar extends Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  filterByCategory: (types) => { dispatch(filterByCategory(types)) },
 });
 const mapStateToProps = (state, props) => ({
   currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
