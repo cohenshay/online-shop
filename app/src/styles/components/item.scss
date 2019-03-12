@@ -6,6 +6,7 @@
   padding: 10px;
   width: 200px;
   cursor: pointer;
+  display: inline-block;
 
   img.item_img {
     height: 180px;
@@ -18,6 +19,7 @@
     padding-top: 5px;
   }
   .image-slider-wrapper{
+    display: inline-block;
     display:none;
     .img-in-slider{
       margin: 5px 0 30px 5px;
@@ -26,7 +28,7 @@
     }
   } 
   .image-slider-wrapper.hovered{
-    display:block;
+    display: inline-block;
     .img-in-slider{
       height: 53px;
       width: 53px;

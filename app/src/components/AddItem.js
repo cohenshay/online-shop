@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { addItem } from "../actions/shop";
-import { getAllCategories } from '../actions/shop';
+import { getAllCategories,checkprivilage } from '../actions/shop';
+import LoadingPage from '../components/LoadingPage';
 
 class AddItem extends Component {
   constructor() {
@@ -25,10 +26,15 @@ class AddItem extends Component {
       price: "",
       size: "",
       type: "",
+      error:""
     };
   }
   componentDidMount = () => {
-    this.props.getAllCategories();
+    this.props.checkprivilage((res)=>{
+      if(res.response.data.message=="User have no Admin privilage."){
+        this.setState({error:"User have no Admin privilage."})
+      }
+    })
   }
   handleInputChange = (event, a) => {
     const target = event.target;
@@ -73,23 +79,7 @@ class AddItem extends Component {
         return result[0].types;
       return [];
     }
-    // let result = [];
-    // if (!this.state.category || !this.props.categories || this.props.categories.length == 0) return result;
-
-    // switch (this.state.category) {
-    //   case "Shoes":
-    //     result = this.props.categories.filter(x => x.name == "Shoes").types;
-    //     break;
-    //   case "Clothing":
-    //     result = this.state.menClothing;
-    //     break;
-    //   case "Accessories":
-    //     result = this.state.menAccessories;
-    //     break;
-    //   default:
-    //     return result;
-    // }
-    // return result;
+ 
   };
   getsportOptions = () => {
 
@@ -124,7 +114,7 @@ class AddItem extends Component {
             <div className="field">
               <label>Category</label>
 
-              <select className="category" onChange={this.handleInputChange} name="category" value={this.state.category}>
+              <select className="category-item" onChange={this.handleInputChange} name="category" value={this.state.category}>
                 {categoryOptions.map((item, index) => (
                   <option key={index} value={item.name}>
                     {item.name}
@@ -211,8 +201,11 @@ class AddItem extends Component {
         </div>
       )
     }
+    else if(this.state.error){
+      return<div className="error-message">{this.state.error}</div>
+    }
     else {
-      return null;
+     return <LoadingPage/>
     }
   }
 }
@@ -222,6 +215,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   getAllCategories: () => {
     dispatch(getAllCategories());
+  },
+  checkprivilage: (callback) => {
+    dispatch(checkprivilage(callback));
   }
 });
 const mapStateToProps = (state, props) => ({

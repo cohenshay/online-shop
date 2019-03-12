@@ -25,14 +25,18 @@ class NavBar extends Component {
       <div className="nav-wrapper">
         <div className="nav-status-bar">
           <ul className="nav-status-right_item-wrapper">
-            {localStorage.getItem('clientToken')==null && <li className="nav-status-right_item">
+            {this.props.currentUser && this.props.currentUser.isAdmin &&
+              <li className="nav-status-right_item pointer">
+                <Link className="menu-link" to="/addItem" >Manage</Link>
+              </li>}
+            {localStorage.getItem('clientToken') == null && <li className="nav-status-right_item">
               <Link to="/login">Login</Link>
             </li>}
-           {localStorage.getItem('clientToken') &&  <li className="nav-status-right_item pointer">
+            {localStorage.getItem('clientToken') && <li className="nav-status-right_item pointer">
               <div onClick={() => this.props.logout()}>Logout</div>
             </li>}
             <li className="nav-status-right_item">
-              <Link to="/cart"> <img className="cart-img" src={`${window.location.origin}${this.props.itemsToPay.length>0 ?"/images/full-cart.png": "/images/cart.png"}`} /></Link>
+              <Link to="/cart"> <img className="cart-img" src={`${window.location.origin}${this.props.itemsToPay.length > 0 ? "/images/full-cart.png" : "/images/cart.png"}`} /></Link>
             </li>
             <li className="nav-status-right_item">
               <Link to="/userDetails"> {this.props.currentUser && <img className="cart-img" src={window.location.origin + this.props.currentUser.image} />}</Link>
@@ -51,9 +55,9 @@ class NavBar extends Component {
           </ul>
         </div>
         <div className="nav-categories-wrapper">
-         
+
           <div className="logo">
-            <img src={`${window.location.origin}/images/nike-logo.png`} className="nike-logo"/>
+            <img src={`${window.location.origin}/images/nike-logo.png`} className="nike-logo" />
           </div>
           <ul>
             {this.state.categories.map((item, index) => (
@@ -109,7 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state, props) => ({
   currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
-  itemsToPay:state.shop.itemsToPay
+  itemsToPay: state.shop.itemsToPay
 
 });
 

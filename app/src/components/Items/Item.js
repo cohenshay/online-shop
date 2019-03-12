@@ -30,8 +30,10 @@ class Item extends Component {
        onClick={()=>this.renderItemDetails()}>
         <img className="item_img" src={`${this.state.imagesPrefix}${this.state.mainImage}`} />
         <div className={`image-slider-wrapper ${this.state.isHovered ? "hovered" : ""}`}>
-          {this.props.images.map((item, index) => (
-            <img key={index} src={`${this.state.imagesPrefix}${item}`} className="img-in-slider" onMouseEnter={() => { this.setState({ mainImage: this.props.images[index] }) }} />))}
+          {this.props.images.filter(x=>x!=null).map((item, index) => (
+            <img key={index} src={`${this.state.imagesPrefix}${item}`} 
+                className="img-in-slider" 
+                onMouseEnter={() => { this.setState({ mainImage: this.props.images[index] }) }} />))}
         </div>
         <div className="item_name">
           {this.props.item.name}

@@ -100,3 +100,17 @@ export const filterByCategory = (items) => {
         })
     }
 }
+export const checkprivilage = (callback) => {
+    return (dispatch, getState) => {
+
+        const config = {
+
+            headers: {
+                authorization: getState().auth.uid || localStorage.getItem('clientToken'),
+            }
+        }
+
+        axios.get(`http://localhost:5000/api/shop/manage/checkprivilage`, config)
+            .then((response) => callback(response)).catch((err) => callback(err))
+    }
+}

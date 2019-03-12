@@ -122,7 +122,8 @@ let controller = {
       const allItems = await Item.find({});
       res.status(200).send(allItems);
     }
-  }
+  },
+ 
 };
 
 module.exports = controller;

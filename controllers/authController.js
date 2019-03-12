@@ -42,7 +42,8 @@ let controller = {
                     email,
                     username,
                     image,
-                    password: hash
+                    password: hash,
+                    isAdmin: false
                 });
                 user.save().then(function (result) {
                     res.status(200).json({
@@ -97,7 +98,7 @@ let controller = {
         if (req.files[0]) {
             const imagePath = "/images/users/" + req.files[0].originalname;
             user = {
-                fname, lname, address, email, username, "password": hash, image: imagePath
+                fname, lname, address, email, username, "password": hash, image: imagePath, isAdmin: false
             }
             upload(req, res, function (err) {
                 if (err) {
@@ -110,7 +111,7 @@ let controller = {
             bcrypt.hash(password, 10, async function (err, hash) {
                 if (user == {}) { //case user did not update image
                     user = {
-                        fname, lname, address, email, username, "password": hash
+                        fname, lname, address, email, username, "password": hash, isAdmin: false
                     }
                 }
                 const newUser = await User.findOneAndUpdate({ email: prevEmail }, { $set: { ...user } }, { new: true, useFindAndModify: false });
@@ -121,9 +122,9 @@ let controller = {
 
             });
         }
-        else{
+        else {
             user = {
-                fname, lname, address, email, username
+                fname, lname, address, email, username, isAdmin: false
             }
             const newUser = await User.findOneAndUpdate({ email: prevEmail }, { $set: { ...user } }, { new: true, useFindAndModify: false });
             res.status(200).json({
@@ -132,7 +133,12 @@ let controller = {
             });
 
         }
-    }
+    },
+    checkprivilage: async (req, res) => {
+        //this route goes throw jwtAdmin to check if the user is admin     
+        res.status(200).send("Allowed");
+
+    },
 }
 
 

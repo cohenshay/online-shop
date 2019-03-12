@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const jwtAuthenticator = require('./helpers/jwtAuthenticator');
+const jwtAdmin = require('./helpers/jwtAdmin');
 const multer = require('multer');
 const crypto = require('crypto');
 const mime = require('mime');
@@ -22,6 +23,7 @@ const roomMessagesRouter = require('./routes/roomMessages');
 const shopRouter = require('./routes/shop');
 const contactUsRouter = require('./routes/contactUs');
 const paymentRouter = require('./routes/payment');
+const manageRouter = require('./routes/manage');
 const http = require('http');
 
 
@@ -81,6 +83,7 @@ app.use('/auth', authRouter);
 app.use('/contactUs',contactUsRouter);
 app.use('/payment',paymentRouter);
 app.use('/api/shop/', shopRouter);
+app.use('/api/shop/manage', jwtAdmin,manageRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
