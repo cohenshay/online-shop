@@ -29,32 +29,33 @@ class ItemDetails extends Component {
                             <div className="category">
                                 {this.state.item.category}
                             </div>
-                            <div className="item_price">
+                            <div className="item_name itemWrap">
+                                <div className="itemTitle">name:</div>
+                                {this.state.item.name}
+                            </div>
+                            <div className="item_price itemWrap">
+                                <div className="itemTitle">price:</div>
                                 {`${this.state.item.price}$`}
                             </div>
                         </div>
-
-                        <div className="item_name">
-                            {this.state.item.name}
-                        </div>
-                        <div className="item_sizes">
-                            Select Size
+                        <div className="item_sizes itemWrap">
+                            <div className="itemTitle">Select Size:</div>
                             {this.state.sizes.map((size, index) => (
                                 <div className="size-box_container" key={index}>
-                                    <div className="item_size">
+                                    <div className="item_size pointer">
                                         {size}
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className="add_to_card">
+                        <div className="add_to_card itemWrap">
                             <button className="add-button" onClick={this.addItem}>Add to Cart</button>
                         </div>
-                        <div className="description">
+                        <div className="description itemWrap">
                             {this.state.item.description}
                         </div>
 
-                        <Link to={`/chat/${this.state.item.name}`} params={{ subject: this.state.item.name }}>Chat</Link>
+                        <Link className="chatBtn" to={`/chat/${this.state.item.name}`} params={{ subject: this.state.item.name }}>Chat</Link>
                     </div>
                     <div className="item-images">
                         <div className="images-row">
@@ -74,7 +75,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     addItemToCart: (item) => { dispatch(addItemToCart(item)) }
 });
 const mapStateToProps = (state, props) => ({
-    itemsToPay:state.shop.itemsToPay
+    itemsToPay: state.shop.itemsToPay
 });
 
 export default connect(

@@ -3,7 +3,8 @@
     background: #e5ddd5;
     .private-message-wrapper {
         border-radius: 7.5px;
-        box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+        float: left;
+        // box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
         font-size: 14.2px;
         line-height: 19px;
         color: #262626;
@@ -11,7 +12,7 @@
         margin-bottom: 0;
         border-top-left-radius: 0px;
         padding: 7px 30px;
-        clear: both;
+        // clear: both;
     }
     .current-user {
         background: #dcf8c6;
@@ -40,5 +41,41 @@
     }
     .message-date {
         font-size: 10px;
+        float: left;
+    }
+    .imgWrap img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        float: left;
+    }
+    .imgWrap {
+        float: left;
+        width: 50px;
+        height: 50px;
+    } 
+    .current-user{
+        float: left;
+    }
+    .other-user{
+        float: right
+    }
+    .message-wrap{
+        width: 100%;
+        float: left;
+    }
+    input.message-input {
+        padding: 10px;
+        width: 98%;
+        margin: 20px 1%;
+        border-radius: 15px;
+        border: none;
+    }
+    .message{
+        padding: 10px;
+        border-radius:10px; 
+        width: 70%;
+        margin: 10px;
+     
     }
 }

@@ -26,13 +26,22 @@ class Messages extends Component {
                     <h3>Previous Messages</h3>
                     {
                         this.props.userMessages.map((data, index) =>
-                        <div className="message-wrapper" key={index}>
-                            <img 
-                                src={`${window.location.origin}${data.users.filter(x => x._id != this.props.currentUser._id)[0].image}`} 
-                                className="user-image pointer" 
-                                onClick={()=>this.props.goToPrivateChat(data.users.filter(x => x._id != this.props.currentUser._id)[0])}/>
-                            <div></div>
-                        </div>)
+                            <div className="message-wrapper" key={index}>
+                                {false && <img
+                                    src={`${window.location.origin}${data.users.filter(x => x._id != this.props.currentUser._id)[0].image}`}
+                                    className="user-image pointer"
+                                    onClick={() => this.props.goToPrivateChat(data.users.filter(x => x._id != this.props.currentUser._id)[0])} />}
+                                <img
+                                    src={`${window.location.origin}${"/images/messages.jpg"}`}
+                                    className="user-image pointer"
+                                    onClick={() => this.props.goToPrivateChat(data.users.filter(x => x._id != this.props.currentUser._id)[0])} />
+                                <div className="user-name">
+                                    gabriel
+                            </div>
+                                <div className="user-date">
+                                    today
+                            </div>
+                            </div>)
                     }
                 </div>
             );

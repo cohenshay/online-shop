@@ -1,5 +1,19 @@
-.user-messages{
-    img.user-image {
-        height: 130px;
-    }
+.message-wrapper {
+    float: left;
+    width: 23%;
+    border: 2px solid #ececec;
+    margin: 0 1%;
+    border-radius: 10px;
+}
+
+.user-messages img.user-image {
+    margin: auto;
+    max-width: 100px;
+    display: table;
+}
+
+.user-name,
+.user-date {
+    padding: 0 10px 10px 10px;
+    text-align: left;
 }

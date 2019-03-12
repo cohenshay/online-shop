@@ -2,7 +2,7 @@
     position: relative;
     .content_category_wrapper {
         overflow: hidden;
-        margin-top: 295px;
+        // margin-top: 295px;
         .items-wrapper {
             float: right;
             width: calc(100% - 310px)
@@ -12,4 +12,9 @@
         margin-top: 134px;
         overflow: hidden;
     }
+}
+
+.category {
+    font-size: 20px;
+    font-weight: bold;
 }

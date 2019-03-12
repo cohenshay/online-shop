@@ -4,6 +4,8 @@ import "react-tabs/style/react-tabs.css";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Details from './Comp/Details';
 import Messages from './Comp/Messages';
+import Cart from '../Cart';
+
 class UserDetails extends Component {
     constructor() {
         super();
@@ -21,22 +23,17 @@ class UserDetails extends Component {
                 <TabList>
                     <Tab>Details</Tab>
                     <Tab>Messages</Tab>
-                    <Tab>History</Tab>
                     <Tab>Cart</Tab>
                 </TabList>
 
                 <TabPanel>
                   <Details currentUser={this.props.currentUser}/>
                 </TabPanel>
+                <TabPanel>
                     <Messages currentUser={this.props.currentUser} goToPrivateChat={this.goToPrivateChat}/>
-                <TabPanel>
-                   
                 </TabPanel>
                 <TabPanel>
-                  
-                </TabPanel>
-                <TabPanel>
-                  
+                    <Cart />
                 </TabPanel>
             </Tabs>);
 

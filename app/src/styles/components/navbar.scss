@@ -50,7 +50,7 @@
             float: right;
             padding: 8px 30px;
         }
-        .nike-logo{
+        .nike-logo {
             height: 23px;
             width: 47px;
         }
@@ -66,6 +66,7 @@
             background-color: #fff;
             color: #002f5b;
             border-bottom: 5px solid #002f5b;
+
         }
         .logo {
             float: left;
@@ -81,10 +82,14 @@
         background: white;
         display: none;
         width: 100%;
-        overflow: hidden;
+        overflow: hidden;  box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
+            -webkit-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
         .nav-expand-categories-wrapper {
             width: 60%;
             margin: auto;
+          
+
             .nav-expand-category {
                 width: 33%;
                 float: left;

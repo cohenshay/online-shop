@@ -9,10 +9,48 @@
         float: left;
         margin-left: 67px;
     }
-    .images-row{
+    .images-row {
         img.item-details_image {
             width: 45%;
             margin-left: 5px;
         }
+    }
+    .category {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .item_size {
+        float: left;
+        width: 30px;
+        border: 2px solid;
+        text-align: center;
+        margin-right: 5px;
+        padding: 2px;
+    }
+    .add-button {
+        width: 100%;
+        margin: 15px 0;
+    }
+    .itemTitle {
+        float: left;
+        width: 90px;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    .itemWrap {
+        margin-top: 10px;
+    }
+
+    .chatBtn{
+        box-shadow: 0px 0px 21px -1px rgba(0,0,0,0.73);
+        -webkit-box-shadow: 0px 0px 21px -1px rgba(0,0,0,0.73);
+        -moz-box-shadow: 0px 0px 21px -1px rgba(0,0,0,0.73);
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+        background: #ececec;
+        color: black;
+        margin: 20px 0;
+        float: left;
     }
 }

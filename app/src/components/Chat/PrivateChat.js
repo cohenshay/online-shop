@@ -40,11 +40,11 @@ class PrivateChat extends Component {
         this.props.getConversation(data)
     }
     sendPrivateMessage = (message) => {
-     
+
         const msg = {
             message,
             receiver: this.state.privateChatWith,
-            sender:this.props.currentUser._id,
+            sender: this.props.currentUser._id,
             createdAt: moment.utc().toString(),
         }
         this.state.socket.emit('getPrivateMessage', msg);
@@ -76,13 +76,20 @@ class PrivateChat extends Component {
             <div className="privateMessages">
                 {
                     this.state.privateMessages && this.state.privateMessages.length > 0 && this.state.privateMessages.map((message, index) =>
-                        <div className={`private-message-wrapper ${message.sender == this.props.currentUser ? "current-user" : "other-user"}`} key={index}>
-                            <div className="message-text">{message.message}</div>
-                            <div className="message-date">{message.createdAt}</div>
+                        <div className="message-wrap" key={index}>
+                            <div className={`message ${message.sender == this.props.currentUser._id ? "current-user" : "other-user"}`} >
+                                <div className="imgWrap">
+                                    <img src={window.location.origin + `/${this.props.currentUser.image}`} className="image-user" />
+                                </div>
+                                <div className={`private-message-wrapper `} key={index}>
+                                    <div className="message-text">{message.message}</div>
+                                    <div className="message-date">{message.createdAt}</div>
+                                </div>
+                            </div>
                         </div>
                     )
                 }
-                <input type="text" onChange={this.handleMessage} placeholder="message" value={this.state.message} placeholder="Write Message" onKeyPress={this._handleKeyPress} />
+                <input type="text" className="message-input" onChange={this.handleMessage} placeholder="message" value={this.state.message} placeholder="Write Message" onKeyPress={this._handleKeyPress} />
             </div>
 
         );
