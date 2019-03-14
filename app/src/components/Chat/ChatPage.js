@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
-import { getRoomMessages, setRoomMessages, saveLike } from '../../actions/roomMessages';
+import { getRoomMessages, setRoomMessages, saveLike,getLikes } from '../../actions/roomMessages';
 import ConnectedUsers from './components/ConnectedUsers';
 import PrivateChat from "./PrivateChat";
 const moment = require('moment');
@@ -112,7 +112,7 @@ class ChatPage extends Component {
     let data = {
       messageId: message._id,
       subject: this.props.match.params.subject,
-      type: "disLike"
+      type: "like"
     }
     let like = {
       sender: this.props.currentUser,
@@ -139,7 +139,7 @@ class ChatPage extends Component {
   componentDidMount() {
     const subject = this.props.match.params.subject;
     this.props.getRoomMessages({ subject }, this.checkResponse)
-
+    this.props.getLikes();
     this.state.socket.on("connect", (err) => {
       if (err)
         return console.log(err);
@@ -254,47 +254,6 @@ class ChatPage extends Component {
 
 
       </div>
-      // <div className="chatPage">
-      //   <div className="chat__sidebar">
-      //     <h3>People</h3>
-      //     <div id="users">
-      //       {this.state.userList.length > 0 &&
-      //         <ol>
-      //           {this.state.userList.filter(x => x.roomName == this.state.roomName).map((user, index) => <li key={index} onClick={() => { this.sendPrivateMessage(user) }}>{user.username}</li>)}
-      //         </ol>
-      //       }
-      //     </div>
-      //     {this.state.messages.length > 0 &&
-      //       <div>
-      //         <h3>Private Messages</h3>
-      //         <li>
-      //           {this.state.messages.map((msg, index) => <div className="message__title" key={index}><h4>{`from: ${msg.name}, to: ${msg.msg}`}</h4></div>)}
-      //         </li>
-      //       </div>
-      //     }
-      //   </div>
-
-      //   <div className="chat__main">
-      //     <ol id="messages" className="chat__messages"></ol>
-      //     {
-      //       this.state.roomMessages && this.state.roomMessages.length > 0 && this.renderMessages()
-      //     }
-      //     <div className="chat__footer">
-      //       <div id="message-form" >
-      //         <input name="message" onChange={(e) => this.setState({ currentMessage: e.target.value })} type="text" placeholder="Message" autoFocus autoComplete="off" />
-      //         <button onClick={(e) => { this.sendRoomMessage(this.state.currentMessage) }}>Send</button>
-      //       </div>
-      //     </div>
-      //     <b>Rooms</b>
-      //     {
-      //       this.props.rooms && this.props.rooms.map((room, index) =>
-      //         <div key={index}
-      //           className="rooms-names"
-      //           onClick={() => this.enterRoom(room.name)}>{room.name}</div>)
-      //     }
-      //   </div>
-      // </div>
-
     );
   }
 }
@@ -302,7 +261,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   getRoomMessages: (roomName, callback) => { dispatch(getRoomMessages(roomName, callback)); },
   saveLike: (data) => { dispatch(saveLike(data)); },
   savePrivateMessage: (data) => { dispatch(savePrivateMessage(data)); },
-
+  getLikes:()=> {dispatch(getLikes())},
   setRoomMessages: (roomName, msg) => { dispatch(setRoomMessages(roomName, msg)); },
 });
 const mapStateToProps = (state, props) => ({

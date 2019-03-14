@@ -54,7 +54,7 @@ let controller = {
         let like = { createdAt, "sender": currentUserId }
         if (type == "like") {
             try {
-                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.0.likes": like } })
+                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.$.likes": like } })
                 res.status(200).send(updatedMessage);
             } catch (error) {
                 console.log("Error saveLike: ", error)
@@ -62,7 +62,7 @@ let controller = {
         }
         else if (type == "disLike") {
             try {
-                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.0.disLike": like } })
+                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.$.disLikes": like } })
                 res.status(200).send(updatedMessage);
             } catch (error) {
                 console.log("Error saveDisLike: ", error)
@@ -70,21 +70,18 @@ let controller = {
         }
 
     },
-    saveReplay: async (req, res) => {
-        const { subject, messageReplayedID, replayMessage } = req.body;
+    getLikes: async (req, res) => {
         const currentUserId = req.decoded._id;
-        const createdAt = moment.utc();
-
-        let replay = { createdAt, "sender": currentUserId, "message": replayMessage }
-
+      
         try {
-            const messageID = mongoose.Types.ObjectId(messageReplayedID);
-            updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageID }, { $push: { "messages.$.replays": replay } })
-            res.status(200).send(updatedMessage);
+            //TODO bring also the message itself
+            const find = await roomMessagesModel.find({ "messages.sender": currentUserId },"subject messages.likes messages.disLikes");
+            console.log("like", find)
+            
+            res.status(200).send(find);
         } catch (error) {
-            console.log("Error saveReplay: ", error)
+            console.log("Error saveLike: ", error)
         }
-
     },
 
 }

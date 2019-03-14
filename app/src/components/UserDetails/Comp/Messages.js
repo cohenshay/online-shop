@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import LoadingPage from '../../LoadingPage';
 import { getUserMessages } from '../../../actions/user';
+import {getLikes} from '../../../actions/roomMessages';
 class Messages extends Component {
     constructor() {
         super();
@@ -12,13 +13,15 @@ class Messages extends Component {
 
 
     componentDidMount = () => {
-        this.props.getUserMessages(this.props.currentUser)
+        this.props.getUserMessages(this.props.currentUser);
+        this.props.getLikes();
     }
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.userMessages != this.props.userMessages) {
 
         }
     }
+    //todo delete hard coded
     render() {
         if (this.props.userMessages.length > 0) {
             return (
@@ -54,10 +57,14 @@ class Messages extends Component {
 }
 
 const mapDispatchToProps = (dispatch, props) => ({
-    getUserMessages: (user) => { dispatch(getUserMessages(user)) }
+    getUserMessages: (user) => { dispatch(getUserMessages(user)) },
+    getLikes:()=> {dispatch(getLikes())},
+
 });
 const mapStateToProps = (state, props) => ({
-    userMessages: state.user.userMessages
+    userMessages: state.user.userMessages,
+    userLikes:state.user.likes,
+    userDisLikes:state.user.disLikes
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

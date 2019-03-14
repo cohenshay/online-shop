@@ -33,7 +33,7 @@ export const setRoomMessages = (msg) => {
 
 
         axios.post(`http://localhost:5000/api/roomMessages/saveRoomMessage`, msg, config)
-            .then((response) =>console.log("setRoomMessages success",response) ).catch((err) => console.log(err))
+            .then((response) => console.log("setRoomMessages success", response)).catch((err) => console.log(err))
     }
 }
 export const saveLike = (data) => {
@@ -48,24 +48,24 @@ export const saveLike = (data) => {
 
 
         axios.post(`http://localhost:5000/api/roomMessages/saveLike`, data, config)
-            .then((response) =>console.log("saveLike success",response) ).catch((err) => console.log(err))
+            .then((response) => console.log("saveLike success", response)).catch((err) => console.log(err))
     }
 }
-// export const getRooms = (msg) => {
-//     return (dispatch, getState) => {
+export const getLikes = () => {
+    return (dispatch, getState) => {
 
-//         const config = {
-//             headers: {
-//                 authorization: getState().auth.uid || localStorage.getItem('clientToken'),
-//             }
-//         }
+        const config = {
+            headers: {
+                authorization: getState().auth.uid || localStorage.getItem('clientToken'),
+            }
+        }
 
 
 
-//         axios.get(`http://localhost:5000/api/room/getRooms`, config)
-//             .then((response) => dispatch({
-//                 type: "GET_ROOMS",
-//                 data: response.data
-//             })).catch((err) => console.log(err))
-//     }
-// }
+        axios.get(`http://localhost:5000/api/roomMessages/getLikes`, config)
+            .then((response) => dispatch({
+                type: "GET_USER_LIKES",
+                data: response.data
+            })).catch((err) => console.log(err))
+    }
+}
