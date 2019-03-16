@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import socketIOClient from "socket.io-client";
-import { getRoomMessages, setRoomMessages, saveLike,getLikes } from '../../actions/roomMessages';
+import { getRoomMessages, setRoomMessages, saveLike, getLikes, newNotifiactions } from '../../actions/roomMessages';
 import ConnectedUsers from './components/ConnectedUsers';
 import PrivateChat from "./PrivateChat";
 const moment = require('moment');
@@ -88,23 +88,13 @@ class ChatPage extends Component {
     let data = {
       messageId: message._id,
       subject: this.props.match.params.subject,
-      type: "disLike"
-    }
-    let like = {
+      type: "disLike",
       sender: this.props.currentUser,
       createdAt: moment.utc().toString(),
+      index
     }
-    this.setState((previousState, currentProps) => {
-      let otherMessage = previousState.roomMessages.filter(x => x._id != message._id);
-      let messageUpdate = previousState.roomMessages.filter(x => x._id == message._id)[0];
-      messageUpdate.disLikes.push(like);
-      otherMessage.splice(index, 0, messageUpdate);
 
-      return {
-        roomMessages: otherMessage
-      };
-    });
-
+    this.state.socket.emit('getLike', data);
     this.props.saveLike(data);
   }
 
@@ -112,23 +102,15 @@ class ChatPage extends Component {
     let data = {
       messageId: message._id,
       subject: this.props.match.params.subject,
-      type: "like"
-    }
-    let like = {
+      type: "like",
       sender: this.props.currentUser,
       createdAt: moment.utc().toString(),
+      index
     }
-    this.setState((previousState, currentProps) => {
-      let otherMessage = previousState.roomMessages.filter(x => x._id != message._id);
-      let messageUpdate = previousState.roomMessages.filter(x => x._id == message._id)[0];
-      messageUpdate.likes.push(like);
-      otherMessage.splice(index, 0, messageUpdate);
 
-      return {
-        roomMessages: otherMessage
-      };
-    });
 
+
+    this.state.socket.emit('getLike', data);
     this.props.saveLike(data);
   }
 
@@ -158,12 +140,39 @@ class ChatPage extends Component {
       this.setState({ userList: userList });
     });
 
+    this.state.socket.on('sendLike', (data) => {
 
+      let like = {
+        sender: data.sender._id,
+        createdAt: data.createdAt
+      }
+      let otherMessage = [];
+      let messageUpdate = [];
+      this.setState((previousState, currentProps) => {
+        otherMessage = previousState.roomMessages.filter(x => x._id != data.messageId);
+        messageUpdate = previousState.roomMessages.filter(x => x._id == data.messageId)[0];
+        if (data.type == "like") messageUpdate.likes.push(like);
+        else messageUpdate.disLikes.push(like);
+        otherMessage.splice(data.index, 0, messageUpdate);
+
+        return {
+          roomMessages: otherMessage
+        };
+      });
+
+      this.props.newNotifiactions({
+        sender: data.sender.username,
+        createdAt: data.createdAt,
+        type:data.type
+      });
+    });
 
     this.state.socket.on('sendRoomMsg', (data) => {
       console.log("message: ", data);
       this.setState((prevState) => ({ roomMessages: [...prevState.roomMessages, data] }));
     });
+
+
   }
 
   applyFilter = (e) => {
@@ -218,8 +227,8 @@ class ChatPage extends Component {
                       </div>
                       <div className="poepleText">{message.username}</div>
                       <div className="replay">
-                        <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} /><span className="likes-number">{message.likes && message.likes.length}</span>
-                        <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} /><span  className="disLikes-number">{message.disLikes && message.disLikes.length}</span>
+                        <img src={window.location.origin + "/images/like.png"} className="like" onClick={() => this.sendLike(message, index)} /><span className="likes-number pointer" onClick={() => this.sendLike(message, index)}>{message.likes && message.likes.length}</span>
+                        <img src={window.location.origin + "/images/unlike.png"} className="unlike" onClick={() => this.sendDisLike(message, index)} /><span className="disLikes-number pointer" onClick={() => this.sendDisLike(message, index)}>{message.disLikes && message.disLikes.length}</span>
                       </div>
                     </div>
                     <div className="textOpinionWrap">
@@ -261,8 +270,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   getRoomMessages: (roomName, callback) => { dispatch(getRoomMessages(roomName, callback)); },
   saveLike: (data) => { dispatch(saveLike(data)); },
   savePrivateMessage: (data) => { dispatch(savePrivateMessage(data)); },
-  getLikes:()=> {dispatch(getLikes())},
+  getLikes: () => { dispatch(getLikes()) },
   setRoomMessages: (roomName, msg) => { dispatch(setRoomMessages(roomName, msg)); },
+  newNotifiactions: (data) => { dispatch(newNotifiactions(data)) },
 });
 const mapStateToProps = (state, props) => ({
   roomMessages: state.roomMessages.roomMessages || [],

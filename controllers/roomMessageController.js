@@ -54,7 +54,7 @@ let controller = {
         let like = { createdAt, "sender": currentUserId }
         if (type == "like") {
             try {
-                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.$.likes": like } })
+                updatedMessage = await roomMessagesModel.findOneAndUpdate({ subject, "messages._id": messageId }, { $push: { "messages.$.likes": like } },{new:true})
                 res.status(200).send(updatedMessage);
             } catch (error) {
                 console.log("Error saveLike: ", error)
@@ -62,7 +62,7 @@ let controller = {
         }
         else if (type == "disLike") {
             try {
-                updatedMessage = await roomMessagesModel.updateOne({ subject, "messages._id": messageId }, { $push: { "messages.$.disLikes": like } })
+                updatedMessage = await roomMessagesModel.findOneAndUpdate({ subject, "messages._id": messageId }, { $push: { "messages.$.disLikes": like } },{new:true})
                 res.status(200).send(updatedMessage);
             } catch (error) {
                 console.log("Error saveDisLike: ", error)

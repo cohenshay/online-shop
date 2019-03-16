@@ -1,5 +1,6 @@
 const initialState = {
-  userMessages: []
+  userMessages: [],
+  newNotifiactions:[]
 };
 
 export default (state = initialState, action) => {
@@ -7,14 +8,25 @@ export default (state = initialState, action) => {
     case "GET_USER_MESSAGES":
       return { ...state, userMessages: action.data };
     case "GET_USER_LIKES":
-    debugger
-      return { ...state,
-         userLikes: action.data.map(item=>{
-                    return {"subject":item.subject,
-                            "likes":item.messages.map(message=>message.likes)}})
-        ,userDisLikes: action.data.map(item=>{
-                    return {"subject":item.subject,
-                            "likes":item.messages.map(message=>message.disLikes)}})};
+
+      return {
+        ...state,
+        userLikes: action.data.map(item => {
+          return {
+            "subject": item.subject,
+            "likes": item.messages.map(message => message.likes)
+          }
+        })
+        , userDisLikes: action.data.map(item => {
+          return {
+            "subject": item.subject,
+            "likes": item.messages.map(message => message.disLikes)
+          }
+        })
+      };
+    case "NEW_NOTIFICATION":
+    
+      return { ...state, newNotifiactions:[...state.newNotifiactions ,action.data] };
     default:
       return state;
   }

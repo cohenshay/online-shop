@@ -17,7 +17,7 @@ const Payments = (props) => {
     useEffect(() => {
         if (clientId) {
 
-            debugger
+            
             paypal.Button.render({
                 braintree: braintree,
                 client: {

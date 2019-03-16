@@ -118,18 +118,28 @@ $imagesPath:"/images";
     .replay img {
         width: 50px;
     }
+    .like{
+        position: absolute;
+        top: 22px;
+        left: 10px;
+    }
     .likes-number {
         position: absolute;
         left: 28px;
-        bottom: 3px;
+        bottom: -55px;
         font-size: 15px;
         font-weight: bold;
         font-family: sans-serif;
     }
+    .unlike{
+        position: absolute;
+        bottom: -70px;
+        left: 67px;
+    }
     .disLikes-number {
         position: absolute;
         left: 70px;
-        bottom: 3px;
+        bottom: -55px;
         font-size: 15px;
         font-weight: bold;
         font-family: sans-serif;

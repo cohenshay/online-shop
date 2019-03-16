@@ -7,7 +7,7 @@ import LoginPage from '../components/LoginPage';
 import addItem from '../components/AddItem';
 import Main from '../components/Main/Main';
 import ItemDetails from '../components/Items/ItemDetails';
-import NavBar from "../components/General/NavBar";
+import NavBar from "../components/NavBar/NavBar";
 import ContactUs from '../components/ContactUs';
 import Payment from '../components/Payment';
 import Cart from '../components/Cart';

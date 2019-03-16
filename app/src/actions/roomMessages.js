@@ -36,6 +36,11 @@ export const setRoomMessages = (msg) => {
             .then((response) => console.log("setRoomMessages success", response)).catch((err) => console.log(err))
     }
 }
+export const newNotifiactions = (data) => {
+    return (dispatch, getState) => {
+        dispatch({type:"NEW_NOTIFICATION",data})
+    }
+}
 export const saveLike = (data) => {
     return (dispatch, getState) => {
 
@@ -48,7 +53,7 @@ export const saveLike = (data) => {
 
 
         axios.post(`http://localhost:5000/api/roomMessages/saveLike`, data, config)
-            .then((response) => console.log("saveLike success", response)).catch((err) => console.log(err))
+            .then((response) => {}).catch((err) => console.log(err))
     }
 }
 export const getLikes = () => {

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { logout } from '../../actions/auth';
 import { filterTypes, getAllCategories, getTypesByCategory, filterByCategory } from '../../actions/shop';
+import Notifications from './Comp/Notifications';
+
 class NavBar extends Component {
   constructor() {
     super();
@@ -14,6 +16,7 @@ class NavBar extends Component {
       menClothing: ["Tops & T-Shirts", "Shorts", "Polos", "Hoodies & Sweatshirts", "Jackets & Vests", "Pants & Tights",
         "Surf & Swimwear", "Nike Pro & Comression", "Socks & Underwear", "Big & tall", "All Clothing"],
       menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"],
+      openNotifications: false,
 
     };
   }
@@ -27,21 +30,41 @@ class NavBar extends Component {
     this.props.filterByCategory(items);
   }
 
+  openNotifications = (flag) => {
+    this.setState({ openNotifications: flag })
+  }
   render() {
     return (
       <div className="nav-wrapper">
         <div className="nav-status-bar">
           <ul className="nav-status-right_item-wrapper">
-            {this.props.currentUser && this.props.currentUser.isAdmin &&
+            {
+              this.props.newNotifiactions.length > 0 &&
+              <div className="nav-status-right_item pointer" onClick={()=>this.openNotifications(true)}>
+                <span className="num-notifications">{this.state.notifications}</span>
+                <img className="bell" src={window.location.origin + "/images/bell.png"} />
+              </div>
+            }
+            {
+              this.state.openNotifications &&
+              <Notifications newNotifiactions={this.props.newNotifiactions} close={()=>this.openNotifications(false)}/>
+            }
+            {
+              this.props.currentUser && this.props.currentUser.isAdmin &&
               <li className="nav-status-right_item pointer">
                 <div className="menu-link" to="/addItem" >Manage</div>
-              </li>}
-            {localStorage.getItem('clientToken') == null && <li className="nav-status-right_item">
-              <Link to="/login">Login</Link>
-            </li>}
-            {localStorage.getItem('clientToken') && <li className="nav-status-right_item pointer">
-              <div onClick={() => this.props.logout()}>Logout</div>
-            </li>}
+              </li>
+            }
+            {
+              localStorage.getItem('clientToken') == null && <li className="nav-status-right_item">
+                <Link to="/login">Login</Link>
+              </li>
+            }
+            {
+              localStorage.getItem('clientToken') && <li className="nav-status-right_item pointer">
+                <div onClick={() => this.props.logout()}>Logout</div>
+              </li>
+            }
             <li className="nav-status-right_item">
               <Link to="/cart"> <img className="cart-img" src={`${window.location.origin}${this.props.itemsToPay.length > 0 ? "/images/full-cart.png" : "/images/cart.png"}`} /></Link>
             </li>
@@ -53,12 +76,14 @@ class NavBar extends Component {
             <li className="nav-status-left_item">
               <Link to="/">Home</Link>
             </li>
-            {this.state.menues.filter(x => x != "Home").map((item, index) => (
-              <li className="nav-status-left_item" key={index}>
-                <Link className="menu-link" to={`/${item}`}> {item}
-                </Link>
-              </li>
-            ))}
+            {
+              this.state.menues.filter(x => x != "Home").map((item, index) => (
+                <li className="nav-status-left_item" key={index}>
+                  <Link className="menu-link" to={`/${item}`}> {item}
+                  </Link>
+                </li>
+              ))
+            }
           </ul>
         </div>
         <div className="nav-categories-wrapper">
@@ -80,7 +105,7 @@ class NavBar extends Component {
               <div className="nav-expand-category_title">SHOES</div>
               <ul>
                 {this.state.menShoes.map((item, index) => (
-                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
+                  <div onClick={() => this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -88,7 +113,7 @@ class NavBar extends Component {
               <div className="nav-expand-category_title">CLOTHING</div>
               <ul>
                 {this.state.menClothing.map((item, index) => (
-                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
+                  <div onClick={() => this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -99,7 +124,7 @@ class NavBar extends Component {
 
               <ul>
                 {this.state.menAccessories.map((item, index) => (
-                  <div onClick={()=>this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
+                  <div onClick={() => this.handleTypeClick(item)} key={index} className="nav-expand_item pointer">{item}</div>
                 ))}
               </ul>
             </div>
@@ -115,7 +140,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 const mapStateToProps = (state, props) => ({
   currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
-  itemsToPay: state.shop.itemsToPay
+  itemsToPay: state.shop.itemsToPay,
+  newNotifiactions: state.user.newNotifiactions || []
 
 });
 

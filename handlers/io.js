@@ -48,6 +48,11 @@ let ioHandler = io => {
       privateUsersAdapter[data.receiver].emit("sendMsg", data);
     });
 
+    socket.on("getLike", data => {
+      console.log("getLike", data);
+      io.sockets.in(data.subject).emit("sendLike", data);
+    });
+
     socket.on("getRoomMessage", data => {
       console.log("getRoomMessage", data);
       io.sockets.in(data.subject).emit("sendRoomMsg", data);
