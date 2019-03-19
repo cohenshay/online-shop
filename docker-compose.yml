@@ -1,0 +1,31 @@
+version: "2"
+services:
+    client:
+        image: webapp-client
+        restart: always
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./client:/client
+            - /client/node_modules
+        links:
+            - api
+
+    api:
+        image: webapp-api
+        restart: always
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./api:/api
+            - /api/node_modules
+        depends_on:
+            - mongodb
+
+    mongodb:
+        image: mongo
+        restart: always
+        container_name: mongodb
+        ports:
+            - 27017:27017
+

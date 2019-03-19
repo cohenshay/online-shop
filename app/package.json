@@ -12,7 +12,8 @@
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
     "debug": "nodemon --inspect-brk server/server.js",
-    "heroku-postbuild": "yarn run build:prod"
+    "heroku-postbuild": "yarn run build:prod",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "axios": "^0.18.0",
