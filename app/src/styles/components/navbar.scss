@@ -8,15 +8,55 @@
         overflow: hidden;
         border-bottom: 1px solid #e5e5e5;
     }
-    .nav-expand_item{
+    .nav-expand_item {
         display: block;
+    }
+    .bell {
+        position: relative;
+    }
+    .notifications-bar {
+        position: absolute;
+        border: 2px solid #737373;
+        border-radius: 5px;
+        top: 50px;
+        right: 225px;
+        background-color: white;
+    }
+    .notification-item {
+        border-bottom: 1px solid #737373;
+        padding: 5px;
+        color: #0d47a1;
+    }
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+    .like{
+        color: green;
+    }
+    .disLike{
+        color: red;
+    }
+    .sender{
+        font-weight: bold;
+    }
+    .arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 10px 12px 10px;
+        border-color: transparent transparent #737373 transparent;
+        position: absolute;
+        right: 10px;
+        top: -13px;
     }
     .nav-status-right_item-wrapper {
         float: right;
         margin-top: 9px;
         margin-right: 10px;
         .nav-status-right_item {
-            display: inline-block;
+            // display: inline-block;
+            list-style-type: none;
+            float: left;
             padding: 0 10px;
             a {
                 color: #8d8d8d;
@@ -72,7 +112,6 @@
             background-color: #fff;
             color: #002f5b;
             border-bottom: 5px solid #002f5b;
-
         }
         .logo {
             float: left;
@@ -88,14 +127,13 @@
         background: white;
         display: none;
         width: 100%;
-        overflow: hidden;  box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
-            -webkit-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
+        overflow: hidden;
+        box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 3px 9px -1px rgba(0, 0, 0, 0.75);
         .nav-expand-categories-wrapper {
             width: 60%;
             margin: auto;
-          
-
             .nav-expand-category {
                 width: 33%;
                 float: left;

@@ -1,5 +1,4 @@
 $imagesPath:"/images";
-
 .chatPage {
     body {
         margin: 0;
@@ -7,7 +6,7 @@ $imagesPath:"/images";
         padding: 0;
         text-align: left;
     }
-    .write-response{
+    .write-response {
         display: inline-block;
     }
     .poeplesWrap {
@@ -62,7 +61,7 @@ $imagesPath:"/images";
         background-position: center left 5px;
         width: 50%;
     }
-    .mark-word{
+    .mark-word {
         background-color: #FFFF00
     }
     .search input {
@@ -111,27 +110,26 @@ $imagesPath:"/images";
         color: #777b80;
         font-size: 12px;
     }
-    
-    .replay{
+    .replay {
         position: relative;
     }
     .replay img {
-        width: 50px;
+        width: 35px;
     }
-    .like{
+    .like {
         position: absolute;
         top: 22px;
         left: 10px;
     }
     .likes-number {
         position: absolute;
-        left: 28px;
+        left: 20px;
         bottom: -55px;
         font-size: 15px;
-        font-weight: bold;
+        color: white;
         font-family: sans-serif;
     }
-    .unlike{
+    .unlike {
         position: absolute;
         bottom: -70px;
         left: 67px;
@@ -141,7 +139,7 @@ $imagesPath:"/images";
         left: 70px;
         bottom: -55px;
         font-size: 15px;
-        font-weight: bold;
+        color: white;
         font-family: sans-serif;
     }
     .productImg {
@@ -155,11 +153,9 @@ $imagesPath:"/images";
     .productText {
         width: calc(100% - 170px);
     }
-    .unlike{
-      width: 35px !important;
-    }
-    
-    // margin-top: 96px;
+    .unlike {
+        width: 35px !important;
+    } // margin-top: 96px;
     // box-sizing: border-box;
     // padding: 0;
     // font-family: HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue",

@@ -4,15 +4,19 @@ function Notifications(props) {
     return (
         <OutsideClickHandler
             onOutsideClick={() => {
-               props.close()
+                props.close()
             }}
         >
             <div className="notifications-bar">
                 {
                     props.newNotifiactions.map((item, index) =>
                         <div key={index} className="notification-item">
-                            {`${item.sender} ${item.type == "like" ? "liked" : "disLiked"} your post`}
-                        </div>)
+                            <span className="sender"> {item.sender}</span>
+                            <span className={item.type == "like" ? "like" : "disLike"}>{item.type == "like" ? " liked " : " disLiked "} </span>
+                            <span>your post</span>
+                            <div className="arrow"></div>
+                        </div>
+                    )
                 }
             </div>
         </OutsideClickHandler>

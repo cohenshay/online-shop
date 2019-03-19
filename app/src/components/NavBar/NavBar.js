@@ -17,10 +17,14 @@ class NavBar extends Component {
         "Surf & Swimwear", "Nike Pro & Comression", "Socks & Underwear", "Big & tall", "All Clothing"],
       menAccessories: ["Bags & Backpacks", "Apple Wath Nike+"],
       openNotifications: false,
-
+      newNotifiactions:[]
     };
   }
-
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.newNotifiactions != this.props.newNotifiactions) {
+      this.setState({newNotifiactions:nextProps.newNotifiactions.filter(x=>x.sender!=this.props.currentUser.username)})
+    }
+  }
   toggleMenu = (menuName, status) => {
     var element = document.querySelector(".nav-expand");
     element.style.display = status == "open" ? "block" : "none";
@@ -39,16 +43,13 @@ class NavBar extends Component {
         <div className="nav-status-bar">
           <ul className="nav-status-right_item-wrapper">
             {
-              this.props.newNotifiactions.length > 0 &&
-              <div className="nav-status-right_item pointer" onClick={()=>this.openNotifications(true)}>
+              this.state.newNotifiactions.length > 0 &&
+              <div className="nav-status-right_item pointer bell" onClick={() => this.openNotifications(true)}>
                 <span className="num-notifications">{this.state.notifications}</span>
                 <img className="bell" src={window.location.origin + "/images/bell.png"} />
               </div>
             }
-            {
-              this.state.openNotifications &&
-              <Notifications newNotifiactions={this.props.newNotifiactions} close={()=>this.openNotifications(false)}/>
-            }
+
             {
               this.props.currentUser && this.props.currentUser.isAdmin &&
               <li className="nav-status-right_item pointer">
@@ -72,6 +73,10 @@ class NavBar extends Component {
               <Link to="/userDetails"> {this.props.currentUser && <img className="cart-img" src={window.location.origin + this.props.currentUser.image} />}</Link>
             </li>
           </ul>
+          {
+            this.state.openNotifications &&
+            <Notifications newNotifiactions={this.props.newNotifiactions} close={() => this.openNotifications(false)} />
+          }
           <ul className="nav-status-left_item-wrapper">
             <li className="nav-status-left_item">
               <Link to="/">Home</Link>
@@ -142,7 +147,6 @@ const mapStateToProps = (state, props) => ({
   currentUser: state.auth.currentUser || JSON.parse(localStorage.getItem("currentUser")),
   itemsToPay: state.shop.itemsToPay,
   newNotifiactions: state.user.newNotifiactions || []
-
 });
 
 export default connect(
