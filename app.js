@@ -10,7 +10,7 @@ const jwtAdmin = require('./helpers/jwtAdmin');
 const multer = require('multer');
 const crypto = require('crypto');
 const mime = require('mime');
-const moment=require('./helpers/moment');
+const moment = require('./helpers/moment');
 
 //routes
 const indexRouter = require('./routes/index');
@@ -38,9 +38,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 //middlewares
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cookie, authorization");  
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cookie, authorization");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
   next();
 });
@@ -50,40 +50,40 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 var storageForItems = multer.diskStorage({
-  destination: function(req, file, callback) {
+  destination: function (req, file, callback) {
     callback(null, path.resolve(__dirname, `app/public/images/items/`));
   },
-  filename: function(req, file, callback) {
+  filename: function (req, file, callback) {
     crypto.pseudoRandomBytes(16, function (err, raw) {
-      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) +"_"+moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(file.mimetype));
+      callback(null, file.originalname.substring(0, file.originalname.indexOf(".")) + "_" + moment(new Date()).format("DD_MM_YYYY") + '.' + mime.getExtension(file.mimetype));
     });
   }
 });
 var storageForUsers = multer.diskStorage({
-  destination: function(req, file, callback) {
+  destination: function (req, file, callback) {
     callback(null, path.resolve(__dirname, `app/public/images/users/`));
   },
-  filename: function(req, file, callback) {
+  filename: function (req, file, callback) {
     crypto.pseudoRandomBytes(16, function (err, raw) {
-      callback(null,file.originalname.substring(0,file.originalname.indexOf(".")) + '.' + mime.getExtension(file.mimetype));
+      callback(null, file.originalname.substring(0, file.originalname.indexOf(".")) + '.' + mime.getExtension(file.mimetype));
     });
   }
 });
-app.use('/api/shop/addItem',multer({dest: path.join(__dirname, 'app/public/images/items/'),storage:storageForItems}).any());
-app.use('/auth/updateUser',multer({dest: path.join(__dirname, 'app/public/images/user/'),storage:storageForUsers}).any());
+app.use('/api/shop/addItem', multer({ dest: path.join(__dirname, 'app/public/images/items/'), storage: storageForItems }).any());
+app.use('/auth/updateUser', multer({ dest: path.join(__dirname, 'app/public/images/user/'), storage: storageForUsers }).any());
 //private routes (needs auth)
-app.use('/api/user', jwtAuthenticator,userRouter);
-app.use('/api/privateMessages', jwtAuthenticator,privateMessageRouter);
-app.use('/api/roomMessages', jwtAuthenticator,roomMessagesRouter);
-app.use('/chat',jwtAuthenticator);
+app.use('/api/user', jwtAuthenticator, userRouter);
+app.use('/api/privateMessages', jwtAuthenticator, privateMessageRouter);
+app.use('/api/roomMessages', jwtAuthenticator, roomMessagesRouter);
+app.use('/chat', jwtAuthenticator);
 
 //public routes
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/contactUs',contactUsRouter);
-app.use('/payment',paymentRouter);
+app.use('/contactUs', contactUsRouter);
+app.use('/payment', paymentRouter);
 app.use('/api/shop/', shopRouter);
-app.use('/api/shop/manage', jwtAdmin,manageRouter);
+app.use('/api/shop/manage', jwtAdmin, manageRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -100,6 +100,6 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-server.listen(5000);
+server.listen(process.env.PORT || 5000);
 
 module.exports = app;

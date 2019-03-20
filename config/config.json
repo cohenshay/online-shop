@@ -1,0 +1,7 @@
+{
+    "secret": "asdlkjhsdf876",
+    "mongoDB_URL":"mongodb+srv://cohenshay:Pakobig1!@blogdb-tdiqu.mongodb.net/blogApp?retryWrites=true",
+    "adminEmail":"cohenshay85@gmail.com",
+    "payPalAccessToken":"access_token$sandbox$dyk52pfy5v2sgv24$accd7e73e4f2037786f363bc29768d45",
+    "sendGridApiKey":"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"
+}
